@@ -12,11 +12,11 @@ import util.JPAUtil;
 
 public class JPAPlatoDAO implements PlatoDAO {
 
-
+	@Override
 	public List<Plato> getPlatosPorNombre(String nombre) {
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			return em.createQuery("SELECT p FROM Plato p WHERE p.nombre = :nombre", Plato.class)
+			return em.createQuery("SELECT p FROM Plato p WHERE p.nombrePlato = :nombre", Plato.class)
 					.setParameter("nombre", nombre)
 					.getResultList();
 		} finally {

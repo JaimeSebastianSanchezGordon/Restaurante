@@ -25,7 +25,7 @@ public class PlatoRecurso {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Plato> getPlatos(){
-		return platoDAO.getPlatos();
+		return platoDAO.obtenerTodosPlatos();
 	}
 	
 	@GET

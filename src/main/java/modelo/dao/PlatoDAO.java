@@ -12,4 +12,5 @@ public interface PlatoDAO {
 	List<Plato> obtenerTodosPlatos();
 	Plato obtenerPlato(Long id);
 
+	List<Plato> getPlatosPorNombre(String nombre);
 }
