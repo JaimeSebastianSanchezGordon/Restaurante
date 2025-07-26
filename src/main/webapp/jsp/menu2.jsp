@@ -82,11 +82,12 @@
                 </c:forEach>
                 </div>
         </section>
-
+		
+											<!--  Registro Pedido -->
         <section class="registroPedido">
             <!-- Número pedido -->
             <div class="numeroPedido">
-                <h3>Order #256482</h3>
+                <h3>${pedido.id}</h3>
                 <div>
                     <i class="fa-solid fa-xmark"></i>
                 </div>
