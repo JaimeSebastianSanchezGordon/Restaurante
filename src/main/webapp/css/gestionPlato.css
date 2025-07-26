@@ -1,0 +1,480 @@
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lexend', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.contenedor_panel {
+    display: flex;
+    min-height: 100vh;
+}
+
+.barra_lateral {
+    width: 80px;
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.logo{
+    width: 50px;
+    height: 50px;
+    background-color: #F67F20;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+.logo i {
+    color: white;
+    font-size: 24px;
+}
+
+
+.menu_navegacion {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.elemento_navegacion {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.elemento_navegacion:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.elemento_navegacion.activo {
+    background-color: #F67F20;
+    color: white;
+}
+
+/* Para el encabezado de la aplicación */
+.encabezado {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.btnAgregar {
+    background-color: #EE791C;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    width: 125px;
+    height: 40px;
+}
+
+/* Contenido principal */
+.contenido_principal {
+    flex: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Estilos para la tabla */
+.tabla_productos {
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.contenedor_tabla {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    font-weight: 600;
+    color: #555;
+    background-color: #f5f5f5;
+}
+
+tr:hover {
+    background-color: #fafafa;
+}
+
+/* Estilos para los estados */
+.estado {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.in_stock {
+    background-color: #e3f7e8;
+    color: #28a745;
+}
+
+/* Estilos para los botones de acción */
+.acciones {
+    display: flex;
+    gap: 10px;
+}
+
+.btn_editar,
+.btn_eliminar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.btn_editar {
+    color: #F67F20;
+}
+
+.btn_editar:hover {
+    background-color: rgba(246, 127, 32, 0.1);
+}
+
+.btn_eliminar {
+    color: #dc3545;
+}
+
+.btn_eliminar:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contenedor_tabla {
+        overflow-x: auto;
+    }
+
+    th,
+    td {
+        padding: 8px 10px;
+    }
+}
+.imagen_producto {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+.producto_detalle {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+/* Estilos para el modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-contenido {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.cerrar-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+}
+
+.cerrar-modal:hover {
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Lexend', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #F67F20;
+}
+
+.btn-submit {
+    background-color: #F67F20;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #e06d17;
+}
+
+.input-file {
+    display: none;
+}
+
+.file-label {
+    display: block;
+    padding: 10px;
+    border: 1px dashed #ddd;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.file-label:hover {
+    border-color: #F67F20;
+    background-color: rgba(246, 127, 32, 0.05);
+}
+
+.file-label i {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #F67F20;
+}
+
+.preview-imagen {
+    justify-self: center;
+    max-width: 100%;
+    max-height: 150px;
+    margin-top: 10px;
+    border-radius: 8px;
+    display: none;
+}
+
+/* Estilos de vistas de carga de imagenes*/
+
+.campo_imagen_plato {
+	border: 1px dashed #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.3s;
+	position: relative;
+}
+
+.campo_imagen_plato:hover {
+	border-color: #F67F20;
+	background-color: rgba(246, 127, 32, 0.05);
+}
+
+.campo_imagen_plato.dragover {
+	border-color: #F67F20;
+	background-color: rgba(246, 127, 32, 0.1);
+}
+
+.campo_imagen_plato.error {
+	border-color: #dc3545;
+}
+
+.entrada_imagen_plato {
+	display: none;
+}
+
+.contenido_subida_plato {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.icono_subida_plato {
+	width: 48px;
+	height: 48px;
+	margin-bottom: 10px;
+	color: #888;
+}
+
+.texto_subida_plato {
+	font-weight: 500;
+	margin-bottom: 5px;
+}
+
+.texto_subida_secundario_plato {
+	color: #999;
+	font-size: 0.875rem;
+	margin-bottom: 15px;
+}
+
+.boton_subida_plato {
+	background-color: #F67F20;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.boton_subida_plato:hover {
+	background-color: #e06d17;
+}
+
+.preview_imagen_plato {
+	display: none;
+	flex-direction: column;
+	align-items: center;
+}
+
+.imagen_preview_plato {
+	max-width: 100%;
+	max-height: 200px;
+	border-radius: 8px;
+	margin-bottom: 15px;
+}
+
+.info_imagen_plato {
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.nombre_imagen_plato {
+	font-weight: 500;
+	word-break: break-all;
+}
+
+.tamano_imagen_plato {
+	color: #666;
+	font-size: 0.875rem;
+}
+
+.acciones_imagen_plato {
+	display: flex;
+	gap: 10px;
+}
+
+.boton_cambiar_plato, .boton_eliminar_plato {
+	padding: 6px 12px;
+	border-radius: 6px;
+	cursor: pointer;
+	border: 1px solid #ddd;
+	background-color: white;
+	transition: all 0.3s;
+}
+
+.boton_cambiar_plato:hover {
+	background-color: #f0f0f0;
+}
+
+.boton_eliminar_plato {
+	color: #dc3545;
+	border-color: #dc3545;
+}
+
+.boton_eliminar_plato:hover {
+	background-color: rgba(220, 53, 69, 0.1);
+}
+
+.error_imagen_plato {
+	color: #dc3545;
+	font-size: 0.875rem;
+	margin-top: 8px;
+	display: none;
+}
+
+.player-card {
+	border-radius: 10px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+}

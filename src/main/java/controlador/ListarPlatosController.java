@@ -14,14 +14,14 @@ import modelo.dao.PlatoDAO;
 public class ListarPlatosController extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		PlatoDAO platoDAO = new JPAPlatoDAO();
-		
-		request.setAttribute("platos", platoDAO.getPlatos());
-		
+
+		JPAPlatoDAO platoDAO = new JPAPlatoDAO();
+
+		request.setAttribute("platos", platoDAO.obtenerTodosPlatos());
+
 		getServletContext().getRequestDispatcher("/jsp/menu2.jsp").forward(request, response);
 	}
 

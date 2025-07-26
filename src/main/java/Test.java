@@ -9,14 +9,20 @@ public class Test {
 	public static void main(String[] args) {
 		EntityManager em = Persistence.createEntityManagerFactory("Restaurante").createEntityManager();
 
-		Plato plato1 = new Plato(0, "Lomo saltado",
+		/*Plato plato1 = new Plato(0, "Lomo saltado",
 				"Tiras de carne de res salteadas con cebolla, tomate y papas fritas, acompañadas de arroz blanco.",
 				8.50, 0);
 		Plato plato2 = new Plato(0, "Ensalada con pollo",
 				"Lechuga romana fresca con trozos de pechuga de pollo a la parrilla, crutones, queso parmesano y aderezo.",
 				6.75, 0);
 		Plato plato3 = new Plato(0, "Spaghetti a la boloñesa",
-				"Pasta italiana con salsa de carne molida de res, tomate natural, especias y queso rallado.", 7.90, 0);
+				"Pasta italiana con salsa de carne molida de res, tomate natural, especias y queso rallado.", 7.90, 0);*/
+
+
+		Plato plato1 = new Plato("hamburgueza", "en_stock", "HMB-2471","Un plato muy saludable para la salud", 20, 6.99, "css/HMB-2471.jpg");
+		em.getTransaction().begin();
+		em.persist(plato1);
+		em.getTransaction().commit();
 
 //		em.getTransaction().begin();
 //		em.persist(plato3);
@@ -24,8 +30,8 @@ public class Test {
 
 		System.out.println("TODOS LOS PLATOS");
 
-		PlatoDAO plato = new JPAPlatoDAO();
-		for (Plato p : plato.getPlatos()) {
+		JPAPlatoDAO plato = new JPAPlatoDAO();
+		for (Plato p : plato.obtenerTodosPlatos()) {
 			System.out.println(p);
 		}
 
