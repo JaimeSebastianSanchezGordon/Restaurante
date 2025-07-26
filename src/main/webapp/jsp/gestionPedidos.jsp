@@ -28,7 +28,7 @@
             <a href="${pageContext.request.contextPath}/GestionarPedido" class="elemento_navegacion activo">
                 <i class="fas fa-file-alt"></i>
             </a>
-            <a href="${pageContext.request.contextPath}/html/admin/gestionPlatos.html" class="elemento_navegacion">
+            <a href="${pageContext.request.contextPath}/platos" class="elemento_navegacion">
                 <i class="fas fa-hamburger"></i>
             </a>
         </nav>
@@ -111,10 +111,10 @@
 
                 <c:forEach var="detalle" items="${detallesPedido}">
                     <div class="orden_item">
-                        <img src="${detalle.plato.imagen}">
+                        <img class="orden_imagen" src="${detalle.plato.imagenUrl != null ? detalle.plato.imagenUrl : '/images/default-food.png'}">
 
                         <div class="orden_info">
-                            <div class="orden_nombre">${detalle.plato.nombre}</div>
+                            <div class="orden_nombre">${detalle.plato.nombrePlato}</div>
                             <div class="orden_cantidad">x ${detalle.cantidad}</div>
                         </div>
                         <div class="orden_precio">$<fmt:formatNumber value="${detalle.precio}" minFractionDigits="2" maxFractionDigits="2"/></div>

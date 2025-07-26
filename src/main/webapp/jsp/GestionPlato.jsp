@@ -24,7 +24,7 @@
 			<nav class="menu_navegacion">
 				<a href="#" class="elemento_navegacion"> <i
 					class="fas fa-th-large"></i>
-				</a> <a href="#" class="elemento_navegacion"> <i
+				</a> <a href="${pageContext.request.contextPath}/GestionarPedido" class="elemento_navegacion"> <i
 					class="fas fa-file-alt"></i>
 				</a> <a href="#" class="elemento_navegacion activo"> <i
 					class="fas fa-hamburger"></i>
