@@ -1,6 +1,7 @@
 package controlador;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import modelo.dto.EstadoPedidoDTO;
 import java.io.IOException;
 import java.util.List;
 
+@WebServlet("/EstadoPedido")
 public class EstadoPedidoController extends HttpServlet{
     private static final long serialVersionUID = 1L;
     private EstadoPedidoDAO estadoPedidoDAO;
@@ -35,10 +37,10 @@ public class EstadoPedidoController extends HttpServlet{
 
     private void rutear(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String ruta = request.getParameter("ruta") != null ? request.getParameter("ruta") : "listar";
+        String ruta = request.getParameter("ruta") != null ? request.getParameter("ruta") : "verEstadoOrden";
 
         switch (ruta) {
-            case "listar":
+            case "verEstadoOrden":
                 this.verEstadoOrden(request, response);
                 break;
             case "verEstadoPedidoPorId":
@@ -74,7 +76,7 @@ public class EstadoPedidoController extends HttpServlet{
             }
         }
 
-        //getServletContext().getRequestDispatcher("/jsp/estadoPedidoIndividual.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/jsp/estadoPedido.jsp").forward(request, response);
     }
 }
 

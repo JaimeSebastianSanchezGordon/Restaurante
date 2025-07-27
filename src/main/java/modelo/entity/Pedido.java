@@ -1,12 +1,11 @@
 package modelo.entity;
 
 import java.io.Serializable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "pedido")
@@ -38,12 +37,10 @@ public class Pedido implements Serializable {
 
     @Column(name = "invitados")
     private int invitados;
-
+    //Campo para el estado de preparación del pedido
+    @Column(name = "estadoPreparacion")
     private String estadoPreparacion;
 
-    public Pedido(int idPedido, String estado, int numMesa, String formaPago, float cantidadPagar,
-                  String nombreCliente, int invitados, String estadoPreparacion) {
-        this.idPedido = idPedido;
     // NUEVO CAMPO PARA EL DASHBOARD
     @Column(name = "fechaCreacion")
     private LocalDateTime fechaCreacion;
@@ -52,12 +49,8 @@ public class Pedido implements Serializable {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetallePedido> detalles = new ArrayList<>();
 
-    // Constructores
-    public Pedido() {
-    }
-
     public Pedido(String estado, int numMesa, String formaPago, double cantidadPagar,
-                  String nombreCliente, int invitados) {
+                  String nombreCliente, int invitados, String estadoPreparacion) {
         this.estado = estado;
         this.numMesa = numMesa;
         this.formaPago = formaPago;
@@ -66,8 +59,12 @@ public class Pedido implements Serializable {
         this.invitados = invitados;
         this.estadoPreparacion = estadoPreparacion;
     }
+        // Constructores
+    public Pedido() {
+    }
 
-    // Método que se ejecuta antes de persistir (guardar) la entidad
+
+        // Método que se ejecuta antes de persistir (guardar) la entidad
     @PrePersist
     protected void onCreate() {
         if (fechaCreacion == null) {

@@ -16,7 +16,7 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="css/menu.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/menu.css">
 </head>
 
 <body>
@@ -27,7 +27,7 @@
 			</div>
 			<a href="ListarPlatos" class="elemento_navegacion"> <i
 				class="fas fa-home fa_navegacion_activo fa_tam"></i>
-			</a> <a href="" class="elemento_navegacion"> <i
+			</a> <a href="${pageContext.request.contextPath}/EstadoPedido" class="elemento_navegacion"> <i
 				class="fas fa-users fa_navegacion_inactivo fa_tam"></i>
 			</a> <a href="" class="elemento_navegacion"> <i
 				class="fas fa-file-alt fa_navegacion_inactivo fa_tam"></i>

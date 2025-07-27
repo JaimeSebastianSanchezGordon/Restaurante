@@ -22,19 +22,15 @@
         <div class="logo fa_borde_b">
             <i class="fa-brands fa-slack fa_navegacion_activo fa_tam_principal"></i>
         </div>
-        <a href="/html/cliente/dashboard.html" class="elemento_navegacion">
-            <i class="fas fa-home fa_navegacion_activo fa_tam"></i>
-        </a>
-        <a href="#" class="elemento_navegacion">
-            <i class="fas fa-users fa_navegacion_inactivo fa_tam"></i>
-        </a>
-        <a href="/html/cliente/historialFactura.html" class="elemento_navegacion">
-            <i class="fas fa-file-alt fa_navegacion_inactivo fa_tam"></i>
-        </a>
-        <a href="/html/cliente/menu.html" class="elemento_navegacion">
-            <i class="fas fa-hamburger fa_navegacion_inactivo fa_tam"></i>
-        </a>
-        <a href="/html/cliente/loginUsuario.html" class="elemento_navegacion fa_navegacion_inactivo fa_tam">
+        <a href="ListarPlatos" class="elemento_navegacion"> <i
+                class="fas fa-home fa_navegacion_inactivo fa_tam"></i>
+        </a> <a href="${pageContext.request.contextPath}/EstadoPedido" class="elemento_navegacion"> <i
+                class="fas fa-users fa_navegacion_activo fa_tam"></i>
+        </a> <a href="" class="elemento_navegacion"> <i
+                class="fas fa-file-alt fa_navegacion_inactivo fa_tam"></i>
+        </a> <a href="" class="elemento_navegacion"> <i
+                class="fas fa-hamburger fa_navegacion_inactivo fa_tam"></i>
+        </a> <a href="jsp/login.jsp" class="elemento_navegacion fa_navegacion_inactivo fa_tam">
             <i class="fa-solid fa-person-walking-arrow-right"></i>
         </a>
     </aside>
@@ -46,7 +42,7 @@
                     <h1>Estado de Pedidos</h1>
                 </div>
                 <div class="busqueda_pedido">
-                    <form action="${pageContext.request.contextPath}/EstadoPedidoController" method="post" class="d-flex">
+                    <form action="${pageContext.request.contextPath}/EstadoPedido" method="post" class="d-flex">
                         <input type="hidden" name="ruta" value="verEstadoPedidoPorId">
                         <input type="text" name="idPedido" class="form-control me-2" placeholder="Buscar por ID de pedido">
                         <button type="submit" class="btn btn-primary">Buscar</button>

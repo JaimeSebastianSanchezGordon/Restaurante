@@ -1,10 +1,10 @@
 package modelo.dto;
 
 public class EstadoPedidoDTO {
-    private int idPedido;
+    private long idPedido;
     private String estadoPreparacion;
 
-    public EstadoPedidoDTO(int idPedido, String estadoPreparacion) {
+    public EstadoPedidoDTO(long idPedido, String estadoPreparacion) {
         this.idPedido = idPedido;
         this.estadoPreparacion = estadoPreparacion;
     }
@@ -13,7 +13,7 @@ public class EstadoPedidoDTO {
         return estadoPreparacion;
     }
 
-    public int getIdPedido() {
+    public long getIdPedido() {
         return idPedido;
     }
 
