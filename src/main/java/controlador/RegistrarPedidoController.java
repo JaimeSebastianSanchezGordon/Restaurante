@@ -105,7 +105,7 @@ public class RegistrarPedidoController extends HttpServlet{
 		if(detallesPedido.get(0) == null) {
 			System.out.println("No hay lista");
 		}
-		
+
 		List<DetallePedidoDTO> listaDTO = new ArrayList<>();
 		
 		for(DetallePedido detalle : detallesPedido) {
