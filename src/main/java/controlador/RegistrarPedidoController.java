@@ -87,9 +87,21 @@ public class RegistrarPedidoController extends HttpServlet{
 		System.out.println("Valores: " + idPedido + ", " + idPlato + ", " + cantidad);
 		
 		DetallePedido detallePedido = new DetallePedido();
+		// Parte de pedido
 		detallePedido.setIdPed(idPedido);
+		PedidoDAO pedido = new JPAPedidoDAO();
+		Pedido pedido1 = pedido.getPedidoById(Long.parseLong(req.getParameter("idPedido")));
+		detallePedido.setPedido(pedido1);
+		
+		// Parte de plato
 		detallePedido.setIdPla(idPlato);
+
+		PlatoDAO plato = new JPAPlatoDAO();
+		Plato plato1 = plato.obtenerPlato(Long.parseLong(req.getParameter("idPlato")));
+		detallePedido.setPlato(plato1);
 		detallePedido.setCantidad(cantidad);
+		
+		detallePedido.setPrecio(cantidad * plato1.getPrecio());
 		
 		detallePedidoDAO.agregarDetallePedido(detallePedido);
 		resp.setStatus(HttpServletResponse.SC_OK);

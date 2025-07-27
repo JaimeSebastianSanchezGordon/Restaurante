@@ -53,9 +53,9 @@
 						<thead>
 							<tr>
 								<th>Producto</th>
-								<th>Estado</th>
+								<th>Descripción</th>
+								<th>Tipo de Plato</th>
 								<th>ID Producto</th>
-								<th>Cantidad</th>
 								<th>Precio</th>
 								<th>Acciones</th>
 							</tr>
@@ -66,21 +66,36 @@
 									<td class="producto_detalle"><img
 										src="${plato.imagenUrl != null ? plato.imagenUrl : '/images/default-food.png'}"
 										alt="${plato.nombrePlato}" class="imagen_producto" />
-										${plato.nombrePlato}</td>
+										<div class="info_producto">
+											<div class="nombre_producto">${plato.nombrePlato}</div>
+										</div>
+									</td>
+									<td class="descripcion_plato">
+										<c:choose>
+											<c:when test="${not empty plato.descripcionPlato}">
+												<span class="descripcion_texto">${plato.descripcionPlato}</span>
+											</c:when>
+											<c:otherwise>
+												<span class="descripcion_vacia">Sin descripción</span>
+											</c:otherwise>
+										</c:choose>
+									</td>
 									<td><c:choose>
-											<c:when test="${plato.estado == 'in_stock'}">
-												<span class="estado in_stock">En Stock</span>
+											<c:when test="${plato.tipoPlato == 'Comida'}">
+												<span class="tipo comida">Comida</span>
 											</c:when>
-											<c:when test="${plato.estado == 'out_stock'}">
-												<span class="estado out_stock">Agotado</span>
+											<c:when test="${plato.tipoPlato == 'Bebida'}">
+												<span class="tipo bebida">Bebida</span>
 											</c:when>
-											<c:when test="${plato.estado == 'limited'}">
-												<span class="estado limited">Últimas Unidades</span>
+											<c:when test="${plato.tipoPlato == 'Otros'}">
+												<span class="tipo otros">Otros</span>
 											</c:when>
+											<c:otherwise>
+												<span class="tipo otros">${plato.tipoPlato}</span>
+											</c:otherwise>
 										</c:choose></td>
 									<td>${plato.codigoProducto}</td>
-									<td>${plato.cantidad}</td>
-									<td>$${plato.precio}</td>
+									<td>${plato.precio}</td>
 									<td class="acciones"><a
 										href="${pageContext.request.contextPath}/platos?ruta=editar&id=${plato.id}"
 										class="btn_editar"> <i class="fas fa-edit"></i>
@@ -137,7 +152,8 @@
 								<div class="mb-3">
 									<label class="form-label">Código de Producto</label> <input
 										type="text" class="form-control" name="codigoProducto"
-										value="${sessionScope.datosPlato.codigoProducto}">
+										value="${sessionScope.datosPlato.codigoProducto}" maxlength="20"
+										required>
 								</div>
 							</div>
 						</div>
@@ -153,9 +169,16 @@
 							</div>
 							<div class="col-md-6">
 								<div class="mb-3">
-									<label class="form-label">Cantidad</label> <input type="number"
-										class="form-control" name="cantidad"
-										value="${sessionScope.datosPlato.cantidad}" min="0" required>
+									<label class="form-label">Tipo de Plato</label> <select
+										class="form-select" name="tipoPlato" required>
+										<option value="">Seleccione un tipo</option>
+										<option value="Comida"
+											${sessionScope.datosPlato.tipoPlato eq 'Comida' ? 'selected' : ''}>Comida</option>
+										<option value="Bebida"
+											${sessionScope.datosPlato.tipoPlato eq 'Bebida' ? 'selected' : ''}>Bebida</option>
+										<option value="Otros"
+											${sessionScope.datosPlato.tipoPlato eq 'Otros' ? 'selected' : ''}>Otros</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -163,21 +186,6 @@
 						<div class="mb-3">
 							<label class="form-label">Descripción</label>
 							<textarea class="form-control" name="descripcionPlato" rows="3">${sessionScope.datosPlato.descripcionPlato}</textarea>
-						</div>
-
-						<div class="mb-3">
-							<label class="form-label">Estado</label> <select
-								class="form-select" name="estado" required>
-								<option value="">Seleccione un estado</option>
-								<option value="in_stock"
-									${sessionScope.datosPlato.estado eq 'in_stock' ? 'selected' : ''}>En
-									Stock</option>
-								<option value="out_stock"
-									${sessionScope.datosPlato.estado eq 'out_stock' ? 'selected' : ''}>Agotado</option>
-								<option value="limited"
-									${sessionScope.datosPlato.estado eq 'limited' ? 'selected' : ''}>Últimas
-									Unidades</option>
-							</select>
 						</div>
 
 						<!-- Campo para subir imagen del plato -->
@@ -263,7 +271,7 @@
 								src="${pageContext.request.contextPath}/${not empty platoEdicion.imagenUrl ? platoEdicion.imagenUrl : '/images/default-food.png'}"
 								alt="Foto actual del plato" class="rounded-circle"
 								style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #dee2e6;">
-							<p class="text-muted mt-2">Imagen actual del plato Hamburgueza</p>
+							<p class="text-muted mt-2">Imagen actual del plato ${platoEdicion.nombrePlato}</p>
 						</div>
 
 						<div class="row">
@@ -271,14 +279,14 @@
 								<div class="mb-3">
 									<label class="form-label">Nombre del Plato</label> <input
 										type="text" class="form-control" name="nombrePlato"
-										value="${platoEdicion.nombrePlato}" required>
+										value="${platoEdicion.nombrePlato}" maxlength="100" required>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="mb-3">
 									<label class="form-label">Código de Producto</label> <input
 										type="text" class="form-control" name="codigoProducto"
-										value="${platoEdicion.codigoProducto}" readonly>
+										value="${platoEdicion.codigoProducto}" maxlength="20" readonly>
 								</div>
 							</div>
 						</div>
@@ -293,9 +301,15 @@
 							</div>
 							<div class="col-md-6">
 								<div class="mb-3">
-									<label class="form-label">Cantidad</label> <input type="number"
-										class="form-control" name="cantidad"
-										value="${platoEdicion.cantidad}" min="0" required>
+									<label class="form-label">Tipo de Plato</label> <select
+										class="form-select" name="tipoPlato" required>
+										<option value="Comida"
+											${platoEdicion.tipoPlato eq 'Comida' ? 'selected' : ''}>Comida</option>
+										<option value="Bebida"
+											${platoEdicion.tipoPlato eq 'Bebida' ? 'selected' : ''}>Bebida</option>
+										<option value="Otros"
+											${platoEdicion.tipoPlato eq 'Otros' ? 'selected' : ''}>Otros</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -303,20 +317,6 @@
 						<div class="mb-3">
 							<label class="form-label">Descripción</label>
 							<textarea class="form-control" name="descripcionPlato" rows="3">${platoEdicion.descripcionPlato}</textarea>
-						</div>
-
-						<div class="mb-3">
-							<label class="form-label">Estado</label> <select
-								class="form-select" name="estado" required>
-								<option value="in_stock"
-									${platoEdicion.estado eq 'in_stock' ? 'selected' : ''}>En
-									Stock</option>
-								<option value="out_stock"
-									${platoEdicion.estado eq 'out_stock' ? 'selected' : ''}>Agotado</option>
-								<option value="limited"
-									${platoEdicion.estado eq 'limited' ? 'selected' : ''}>Últimas
-									Unidades</option>
-							</select>
 						</div>
 
 						<!-- Campo para actualizar la imagen -->

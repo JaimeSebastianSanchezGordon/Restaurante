@@ -23,9 +23,6 @@ public class Plato implements Serializable{
 	@Column(name = "nombre", nullable = false, length = 100)
 	private String nombrePlato;
 
-	@Column(name = "estado", nullable = false, length = 20)
-	private String estado; // "en_stock", "fuera_stock", "limitado"
-
 	@Column(name = "tipo_plato", length = 255)
 	private String tipoPlato; // Comida, Bebebida, otros.
 	
@@ -34,9 +31,6 @@ public class Plato implements Serializable{
 
 	@Column(name = "descripcion")
 	private String descripcionPlato;
-
-	@Column(name = "cantidad", nullable = false)
-	private Integer cantidad;
 
 	@Column(name = "precio", nullable = false, precision = 10, scale = 2)
 	private double precio;
@@ -48,15 +42,14 @@ public class Plato implements Serializable{
 	public Plato() {
 	}
 
-	public Plato(String nombre, String estado, String codigoProducto,String descripcionProducto,
-				 Integer cantidad, double precio, String imagenUrl) {
+	public Plato(String nombre, String codigoProducto,String descripcionProducto,
+				   double precio, String imagenUrl, String tipo) {
 		this.nombrePlato = nombre;
-		this.estado = estado;
 		this.codigoProducto = codigoProducto;
 		this.descripcionPlato = descripcionProducto;
-		this.cantidad = cantidad;
 		this.precio = precio;
 		this.imagenUrl = imagenUrl;
+		this.tipoPlato = tipo;
 	}
 
 	// Getters y Setters
@@ -68,13 +61,6 @@ public class Plato implements Serializable{
 		this.id = id;
 	}
 
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
 
 	public String getCodigoProducto() {
 		return codigoProducto;
@@ -82,14 +68,6 @@ public class Plato implements Serializable{
 
 	public void setCodigoProducto(String codigoProducto) {
 		this.codigoProducto = codigoProducto;
-	}
-
-	public Integer getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(Integer cantidad) {
-		this.cantidad = cantidad;
 	}
 
 	public double getPrecio() {
@@ -126,31 +104,19 @@ public class Plato implements Serializable{
 
 	// Método para obtener el texto del estado
 	public String getEstadoTexto() {
-		switch (estado) {
-			case "in_stock": return "En Stock";
-			case "out_stock": return "Agotado";
-			case "limited": return "Últimas Unidades";
-			default: return estado;
+		switch (tipoPlato) {
+			case "Comida": return "Comida";
+			case "Bebida": return "Bebida";
+			case "Otros": return "Otros";
+			default: return tipoPlato;
 		}
 	}
+
 	public String getTipoPlato() {
-	    return tipoPlato;
+		return tipoPlato;
 	}
 
 	public void setTipoPlato(String tipoPlato) {
-	    this.tipoPlato = tipoPlato;
-	}
-
-	@Override
-	public String toString() {
-		return "Plato{" +
-				"id=" + id +
-				", nombre='" + nombrePlato + '\'' +
-				", estado='" + estado + '\'' +
-				", codigoProducto='" + codigoProducto + '\'' +
-				", cantidad=" + cantidad +
-				", precio=" + precio +
-				", imagenUrl='" + imagenUrl + '\'' +
-				'}';
+		this.tipoPlato = tipoPlato;
 	}
 }
