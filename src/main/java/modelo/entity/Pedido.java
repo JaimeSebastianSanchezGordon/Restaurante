@@ -19,7 +19,7 @@ public class Pedido implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idPedido;
+    private Long idPedido;
 
     @Column(name = "estado")
     private String estado;
@@ -44,6 +44,20 @@ public class Pedido implements Serializable {
     public Pedido(int idPedido, String estado, int numMesa, String formaPago, float cantidadPagar,
                   String nombreCliente, int invitados, String estadoPreparacion) {
         this.idPedido = idPedido;
+    // NUEVO CAMPO PARA EL DASHBOARD
+    @Column(name = "fechaCreacion")
+    private LocalDateTime fechaCreacion;
+
+    // Relación OneToMany con DetallePedido
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetallePedido> detalles = new ArrayList<>();
+
+    // Constructores
+    public Pedido() {
+    }
+
+    public Pedido(String estado, int numMesa, String formaPago, double cantidadPagar,
+                  String nombreCliente, int invitados) {
         this.estado = estado;
         this.numMesa = numMesa;
         this.formaPago = formaPago;
@@ -53,17 +67,20 @@ public class Pedido implements Serializable {
         this.estadoPreparacion = estadoPreparacion;
     }
 
-    public Pedido() {
-
+    // Método que se ejecuta antes de persistir (guardar) la entidad
+    @PrePersist
+    protected void onCreate() {
+        if (fechaCreacion == null) {
+            fechaCreacion = LocalDateTime.now();
+        }
     }
 
-
-    // Getters y Setters
-    public int getIdPedido() {
+    // Getters y Setters (incluyendo el nuevo campo)
+    public Long getIdPedido() {
         return idPedido;
     }
 
-    public void setIdPedido(int idPedido) {
+    public void setIdPedido(Long idPedido) {
         this.idPedido = idPedido;
     }
 
@@ -95,8 +112,8 @@ public class Pedido implements Serializable {
         return cantidadPagar;
     }
 
-    public void setCantidadPagar(double total) {
-        this.cantidadPagar = total;
+    public void setCantidadPagar(double cantidadPagar) {
+        this.cantidadPagar = cantidadPagar;
     }
 
     public String getNombreCliente() {
@@ -122,10 +139,39 @@ public class Pedido implements Serializable {
         this.estadoPreparacion = estadoPreparacion;
     }
 
+    // NUEVO GETTER Y SETTER PARA FECHA
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public List<DetallePedido> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
+    }
+
+    // Métodos de utilidad para manejar la relación bidireccional
+    public void addDetalle(DetallePedido detalle) {
+        detalles.add(detalle);
+        detalle.setPedido(this);
+    }
+
+    public void removeDetalle(DetallePedido detalle) {
+        detalles.remove(detalle);
+        detalle.setPedido(null);
+    }
+
     @Override
     public String toString() {
-        return "Pedido [idPedido=" + idPedido + ", estado=" + estado + ", numMesa=" + numMesa + ", formaPago="
-                + formaPago + ", cantidadPagar=" + cantidadPagar + ", nombreCliente=" + nombreCliente + ", invitados="
-                + invitados + "]";
+        return "Pedido [idPedido=" + idPedido + ", estado=" + estado + ", numMesa=" + numMesa +
+               ", formaPago=" + formaPago + ", cantidadPagar=" + cantidadPagar +
+               ", nombreCliente=" + nombreCliente + ", invitados=" + invitados +
+               ", fechaCreacion=" + fechaCreacion + "]";
     }
 }

@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "Plato")
+@Table(name = "plato")
 public class Plato implements Serializable{
 
 	private static final long serialVersionUID = 1L;

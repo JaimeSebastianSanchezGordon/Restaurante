@@ -1,6 +1,8 @@
+// ==================== DETALLEPEDIDO.JAVA ====================
 package modelo.entity;
 
 import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,22 +15,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "detallepedido")
-public class DetallePedido  implements Serializable {
+public class DetallePedido implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "idPedido")
-    private int idPedido;
-
-    @Column(name = "idPlato")
-    private int idPlato;
+    private Long id;
 
     @Column(name = "cantidad")
     private int cantidad;
@@ -37,52 +30,31 @@ public class DetallePedido  implements Serializable {
     private double precio;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idPedido", insertable = false, updatable = false)
+    @JoinColumn(name = "idPedido")
     private Pedido pedido;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idPlato", insertable = false, updatable = false)
+    @JoinColumn(name = "idPlato")
     private Plato plato;
 
+    // Constructores
     public DetallePedido() {
-
     }
 
-    public DetallePedido(int idPedido, int idPlato, int cantidad, float precio) {
-        super();
-        this.idPedido = idPedido;
-        this.idPlato = idPlato;
+    public DetallePedido(Pedido pedido, Plato plato, int cantidad, double precio) {
+        this.pedido = pedido;
+        this.plato = plato;
         this.cantidad = cantidad;
         this.precio = precio;
     }
 
-    public int getIdDetallePedido() {
-        return this.id;
-    }
-
-
-    public int getId() {
+    // Getters y Setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getIdPedido() {
-        return idPedido;
-    }
-
-    public void setIdPedido(int idPedido) {
-        this.idPedido = idPedido;
-    }
-
-    public int getIdPlato() {
-        return idPlato;
-    }
-
-    public void setIdPlato(int idPlato) {
-        this.idPlato = idPlato;
     }
 
     public int getCantidad() {
@@ -117,4 +89,18 @@ public class DetallePedido  implements Serializable {
         this.plato = plato;
     }
 
+    // Métodos de utilidad
+    public Long getIdPedido() {
+        return pedido != null ? pedido.getIdPedido() : null;
+    }
+
+    public Long getIdPlato() {
+        return plato != null ? plato.getId() : null;
+    }
+
+    @Override
+    public String toString() {
+        return "DetallePedido [id=" + id + ", cantidad=" + cantidad + ", precio=" + precio + 
+               ", pedidoId=" + getIdPedido() + ", platoId=" + getIdPlato() + "]";
+    }
 }
