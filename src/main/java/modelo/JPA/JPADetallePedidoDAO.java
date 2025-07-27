@@ -21,7 +21,6 @@ public class JPADetallePedidoDAO implements DetallePedidoDAO {
             String jpql = "SELECT d FROM DetallePedido d WHERE d.pedido.idPedido = :idPedido";
             Query query = em.createQuery(jpql, DetallePedido.class);
             query.setParameter("idPedido", idPedido);
-            System.out.println("La lista tiene: " + query.getResultList().);
             return query.getResultList();
         } finally {
             em.close();
@@ -153,4 +152,19 @@ public class JPADetallePedidoDAO implements DetallePedidoDAO {
             em.close();
         }
 	}
+
+	@Override
+	public List<DetallePedido> obtenerDetallesPorPedidoPed(Long idPedido) {
+		EntityManager em = JPAUtil.getEntityManager();
+        try {
+            String jpql = "SELECT d FROM DetallePedido d WHERE d.idPed = :idPedido";
+            Query query = em.createQuery(jpql, DetallePedido.class);
+            query.setParameter("idPedido", idPedido);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+	}
+	
+	
 }

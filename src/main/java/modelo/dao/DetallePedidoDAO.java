@@ -12,4 +12,5 @@ public interface DetallePedidoDAO {
     double calcularTotalPedido(Long idPedido);
     DetallePedido obtenerDetallePedido(Long id);
     List<String> adjuntarDetallePedido(DetallePedido detalle);
+    List<DetallePedido> obtenerDetallesPorPedidoPed(Long idPedido);
 }
