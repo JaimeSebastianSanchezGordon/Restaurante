@@ -7,29 +7,26 @@
     <persistence-unit name="Restaurante">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
+        <!-- Clases @Entity -->
         <class>modelo.entity.Plato</class>
         <class>modelo.entity.Pedido</class>
         <class>modelo.entity.DetallePedido</class>
         <class>modelo.entity.Usuario</class>
-        
 
         <properties>
-            <!-- Configuración de conexión a la base de datos -->
+            <!-- Conexión a la base de datos -->
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/restaurante"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 
-            <!-- 🔧 CAMBIO PRINCIPAL: Auto-generación de tablas -->
-            <!-- 
-                Opciones disponibles:
-                - "create-tables": Crea las tablas si no existen
-                - "drop-and-create-tables": Elimina y recrea las tablas (¡CUIDADO! Borra datos)
-                - "create-or-extend-tables": Crea nuevas tablas o agrega columnas faltantes
-                - "none": No hace nada (configuración anterior)
-            -->
-
+            <!-- Generación de tablas (usa esta opción para desarrollo) -->
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
-            
-            <!-- 📍 ALTERNATIVA SEGURA: Solo crear si no existen -->
-            <!-- <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/> -->
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+
+            <!-- Nivel de log (útil para depurar) -->
+            <property name="eclipselink.logging.level" value="FINE"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>
