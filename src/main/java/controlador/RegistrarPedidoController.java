@@ -185,5 +185,12 @@ public class RegistrarPedidoController extends HttpServlet{
 	    out.print("{\"success\": true, \"subtotal\": " + subtotal + ", \"impuesto\": " + impuesto + ", \"total\": " + total + "}");
 	    out.flush();
 	}
+
+	private void eliminar(HttpServletRequest req, HttpServletResponse resp) 
+			throws ServletException, IOException{
+		int idDetallePedido =  Integer.parseInt(req.getParameter("id"));
+		System.out.println("Eliminar pedido");
+		detallePedidoDAO.eliminarDetallePedido(Long.valueOf(idDetallePedido));
+	}
 	
 }
