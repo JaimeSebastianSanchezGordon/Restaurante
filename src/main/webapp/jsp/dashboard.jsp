@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -51,19 +52,23 @@
 
             <!-- Mostrar errores si existen -->
             <c:if test="${not empty error}">
-                <div class="alert alert-danger" style="margin: 20px; padding: 15px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;">
+                <div class="alert alert-danger">
                     <i class="fas fa-exclamation-triangle"></i>
                     ${error}
                 </div>
             </c:if>
 
             <div class="estadisticas_superiores">
+                <!-- Tarjeta de Ingreso Total con Gráfico de Dona -->
                 <div class="tarjeta_estadistica">
-                    <h3>Ingreso Total</h3>
+                    <h3>Distribución de Ventas</h3>
                     <div class="grafico_dona">
                         <canvas id="graficoIngreso" width="200" height="200"></canvas>
                         <div class="centro_grafico">
-                            <span>$<fmt:formatNumber value="${ingresoTotal}" minFractionDigits="0" maxFractionDigits="0"/></span>
+                            <span>
+                                $<fmt:formatNumber value="${ingresoTotal != null ? ingresoTotal : 0}" 
+                                   minFractionDigits="0" maxFractionDigits="0"/>
+                            </span>
                         </div>
                     </div>
                     <div class="leyenda">
@@ -71,7 +76,7 @@
                             <span class="punto naranja"></span> Comida
                         </span>
                         <span class="elemento_leyenda">
-                            <span class="punto negro"></span> Bebida Fría
+                            <span class="punto negro"></span> Bebidas
                         </span>
                         <span class="elemento_leyenda">
                             <span class="punto gris"></span> Otros
@@ -79,9 +84,13 @@
                     </div>
                 </div>
 
+                <!-- Tarjeta de Estadísticas Generales -->
                 <div class="tarjeta_estadistica">
-                    <h3>Saldo Total</h3>
-                    <div class="monto_saldo">$<fmt:formatNumber value="${ingresoTotal}" minFractionDigits="0" maxFractionDigits="0"/></div>
+                    <h3>Resumen ${periodoSeleccionado != null ? periodoSeleccionado : 'General'}</h3>
+                    <div class="monto_saldo">
+                        $<fmt:formatNumber value="${ingresoTotal != null ? ingresoTotal : 0}" 
+                           minFractionDigits="0" maxFractionDigits="0"/>
+                    </div>
 
                     <div class="elemento_saldo">
                         <div class="icono_saldo negro">
@@ -89,11 +98,22 @@
                         </div>
                         <div class="info_saldo">
                             <p>Ingreso Total</p>
-                            <p class="monto">$<fmt:formatNumber value="${ingresoTotal}" minFractionDigits="2" maxFractionDigits="2"/></p>
+                            <p class="monto">
+                                $<fmt:formatNumber value="${ingresoTotal != null ? ingresoTotal : 0}" 
+                                   minFractionDigits="2" maxFractionDigits="2"/>
+                            </p>
                         </div>
                         <span class="porcentaje ${porcentajeCrecimiento >= 0 ? 'positivo' : 'negativo'}">
-                            (<fmt:formatNumber value="${porcentajeCrecimiento}" minFractionDigits="1" maxFractionDigits="1"/>% 
-                            ${porcentajeCrecimiento >= 0 ? 'Aumento' : 'Descenso'})
+                            <c:choose>
+                                <c:when test="${porcentajeCrecimiento != null}">
+                                    (<fmt:formatNumber value="${porcentajeCrecimiento}" 
+                                       minFractionDigits="1" maxFractionDigits="1"/>% 
+                                    ${porcentajeCrecimiento >= 0 ? 'Aumento' : 'Descenso'})
+                                </c:when>
+                                <c:otherwise>
+                                    (Sin datos previos)
+                                </c:otherwise>
+                            </c:choose>
                         </span>
                     </div>
 
@@ -103,48 +123,69 @@
                         </div>
                         <div class="info_saldo">
                             <p>Pedidos Totales</p>
-                            <p class="monto">${totalPedidos}</p>
+                            <p class="monto">${totalPedidos != null ? totalPedidos : 0}</p>
                         </div>
                         <span class="porcentaje">
-                            (Promedio: $<fmt:formatNumber value="${promedioVenta}" minFractionDigits="2" maxFractionDigits="2"/>)
+                            <c:choose>
+                                <c:when test="${promedioVenta != null and totalPedidos > 0}">
+                                    (Promedio: $<fmt:formatNumber value="${promedioVenta}" 
+                                     minFractionDigits="2" maxFractionDigits="2"/>)
+                                </c:when>
+                                <c:otherwise>
+                                    (Sin promedio)
+                                </c:otherwise>
+                            </c:choose>
                         </span>
                     </div>
                 </div>
             </div>
 
             <div class="seccion_inferior">
+                <!-- Gráfico de Ventas Diarias -->
                 <div class="tarjeta_grafico">
-                    <h3>Ventas Diarias - ${periodoSeleccionado}</h3>
-                    <p class="periodo_info">Período: ${fechaInicio} - ${fechaFin}</p>
+                    <h3>Ventas Diarias - ${periodoSeleccionado != null ? periodoSeleccionado : 'Período Actual'}</h3>
+                    <p class="periodo_info">
+                        Período: ${fechaInicio != null ? fechaInicio : 'N/A'} - ${fechaFin != null ? fechaFin : 'N/A'}
+                        <c:if test="${not empty ventasDiarias}">
+                            | ${fn:length(ventasDiarias)} días con datos
+                        </c:if>
+                    </p>
                     <canvas id="graficoDiario"></canvas>
                 </div>
 
+                <!-- Mejores Platos -->
                 <div class="mejores_platos">
-                    <h3>Mejores Platos</h3>
+                    <h3>Platos Más Vendidos</h3>
                     <div class="encabezado_platos">
                         <span>Plato</span>
                         <span>Vendidos</span>
                     </div>
 
-                    <c:forEach var="platoData" items="${platosPopulares}" varStatus="status">
-                        <div class="elemento_plato">
-                            <img src="${pageContext.request.contextPath}${not empty platoData[2] ? platoData[2] : '/images/default-food.png'}" 
-                                 alt="${platoData[0]}" class="imagen_plato">
-                            <div class="info_plato">
-                                <p class="nombre_plato">${platoData[0]}</p>
-                                <p class="precio_plato">$<fmt:formatNumber value="${platoData[1]}" minFractionDigits="2" maxFractionDigits="2"/></p>
+                    <c:choose>
+                        <c:when test="${not empty platosPopulares}">
+                            <c:forEach var="platoData" items="${platosPopulares}" varStatus="status">
+                                <div class="elemento_plato">
+                                    <img src="${pageContext.request.contextPath}<c:choose><c:when test="${not empty platoData[2]}">${platoData[2]}</c:when><c:otherwise>/images/default-food.png</c:otherwise></c:choose>" 
+                                         alt="${platoData[0]}" class="imagen_plato"
+                                         onerror="this.src='${pageContext.request.contextPath}/images/default-food.png'">
+                                    <div class="info_plato">
+                                        <p class="nombre_plato">${platoData[0]}</p>
+                                        <p class="precio_plato">
+                                            $<fmt:formatNumber value="${platoData[1]}" 
+                                               minFractionDigits="2" maxFractionDigits="2"/>
+                                        </p>
+                                    </div>
+                                    <span class="cantidad_pedidos">${platoData[3]}</span>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="sin_datos">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>No hay datos de platos disponibles para el período seleccionado</p>
                             </div>
-                            <span class="cantidad_pedidos">${platoData[3]}</span>
-                        </div>
-                    </c:forEach>
-
-                    <c:if test="${empty platosPopulares}">
-                        <div class="elemento_plato">
-                            <div class="info_plato">
-                                <p class="nombre_plato">No hay datos disponibles</p>
-                            </div>
-                        </div>
-                    </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </main>
@@ -152,43 +193,153 @@
 
     <!-- Variables JavaScript con datos del servidor -->
     <script>
-        // Datos para los gráficos - solo datos reales de la BD
+        // ====================== DATOS PARA JAVASCRIPT ======================
+        
+        // Datos de ventas diarias con validación
         var ventasDiarias = [
             <c:choose>
                 <c:when test="${not empty ventasDiarias}">
                     <c:forEach var="venta" items="${ventasDiarias}" varStatus="status">
-                        ${venta[1]}<c:if test="${!status.last}">,</c:if>
+                        <c:set var="valor" value="${venta[1]}" />
+                        <c:choose>
+                            <c:when test="${valor != null}">
+                                <fmt:formatNumber value="${valor}" pattern="0.00" />
+                            </c:when>
+                            <c:otherwise>0.00</c:otherwise>
+                        </c:choose>
+                        <c:if test="${!status.last}">,</c:if>
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    // Array vacío si no hay datos
+                    // Array vacío - no hay datos de ventas
                 </c:otherwise>
             </c:choose>
         ];
 
+        // Fechas correspondientes a las ventas
+        var fechasVentas = [
+            <c:choose>
+                <c:when test="${not empty ventasDiarias}">
+                    <c:forEach var="venta" items="${ventasDiarias}" varStatus="status">
+                        '<c:choose><c:when test="${venta[0] != null}"><fmt:formatDate value="${venta[0]}" pattern="dd/MM" /></c:when><c:otherwise>Día ${status.index + 1}</c:otherwise></c:choose>'<c:if test="${!status.last}">,</c:if>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    // Array vacío - no hay fechas
+                </c:otherwise>
+            </c:choose>
+        ];
+
+        // Distribución de categorías con validación
         var distribucionCategorias = {
-            comida: <c:choose><c:when test="${not empty distribucionCategorias['Comida']}">${distribucionCategorias['Comida']}</c:when><c:otherwise>0</c:otherwise></c:choose>,
-            bebida: <c:choose><c:when test="${not empty distribucionCategorias['Bebida Fría']}">${distribucionCategorias['Bebida Fría']}</c:when><c:otherwise>0</c:otherwise></c:choose>,
-            otros: <c:choose><c:when test="${not empty distribucionCategorias['Otros']}">${distribucionCategorias['Otros']}</c:when><c:otherwise>0</c:otherwise></c:choose>
+            comida: <c:choose>
+                <c:when test="${not empty distribucionCategorias['Comida']}">
+                    <fmt:formatNumber value="${distribucionCategorias['Comida']}" pattern="0.00" />
+                </c:when>
+                <c:otherwise>0.00</c:otherwise>
+            </c:choose>,
+            bebida: <c:choose>
+                <c:when test="${not empty distribucionCategorias['Bebida Fría']}">
+                    <fmt:formatNumber value="${distribucionCategorias['Bebida Fría']}" pattern="0.00" />
+                </c:when>
+                <c:otherwise>0.00</c:otherwise>
+            </c:choose>,
+            otros: <c:choose>
+                <c:when test="${not empty distribucionCategorias['Otros']}">
+                    <fmt:formatNumber value="${distribucionCategorias['Otros']}" pattern="0.00" />
+                </c:when>
+                <c:otherwise>0.00</c:otherwise>
+            </c:choose>
         };
 
-        // Debug: Información sobre los datos cargados
-        console.log('=== DASHBOARD DEBUG ===');
-        console.log('Período seleccionado: ${periodoSeleccionado}');
-        console.log('Total de datos de ventas:', ventasDiarias.length);
-        console.log('Datos de ventas diarias:', ventasDiarias);
-        console.log('Distribución categorías:', distribucionCategorias);
-        console.log('Ingreso total: ${ingresoTotal}');
-        console.log('Total pedidos: ${totalPedidos}');
-        console.log('======================');
+        // Variables adicionales para debug y funcionalidad
+        var datosGenerales = {
+            ingresoTotal: <c:choose>
+                <c:when test="${not empty ingresoTotal}">
+                    <fmt:formatNumber value="${ingresoTotal}" pattern="0.00" />
+                </c:when>
+                <c:otherwise>0.00</c:otherwise>
+            </c:choose>,
+            totalPedidos: <c:choose>
+                <c:when test="${not empty totalPedidos}">${totalPedidos}</c:when>
+                <c:otherwise>0</c:otherwise>
+            </c:choose>,
+            promedioVenta: <c:choose>
+                <c:when test="${not empty promedioVenta}">
+                    <fmt:formatNumber value="${promedioVenta}" pattern="0.00" />
+                </c:when>
+                <c:otherwise>0.00</c:otherwise>
+            </c:choose>,
+            porcentajeCrecimiento: <c:choose>
+                <c:when test="${not empty porcentajeCrecimiento}">
+                    <fmt:formatNumber value="${porcentajeCrecimiento}" pattern="0.00" />
+                </c:when>
+                <c:otherwise>0.00</c:otherwise>
+            </c:choose>,
+            periodo: "${periodoSeleccionado != null ? periodoSeleccionado : 'N/A'}",
+            fechaInicio: "${fechaInicio != null ? fechaInicio : 'N/A'}",
+            fechaFin: "${fechaFin != null ? fechaFin : 'N/A'}"
+        };
 
-        // Función para filtrar por período
+        // ====================== DEBUG INFORMACIÓN ======================
+        console.log('=== DASHBOARD DEBUG COMPLETO ===');
+        console.log('Período seleccionado:', datosGenerales.periodo);
+        console.log('Rango de fechas:', datosGenerales.fechaInicio + ' - ' + datosGenerales.fechaFin);
+        console.log('Datos generales:', datosGenerales);
+        console.log('Ventas diarias (' + ventasDiarias.length + ' elementos):', ventasDiarias);
+        console.log('Fechas ventas (' + fechasVentas.length + ' elementos):', fechasVentas);
+        console.log('Distribución categorías:', distribucionCategorias);
+        console.log('Total distribución:', distribucionCategorias.comida + distribucionCategorias.bebida + distribucionCategorias.otros);
+        console.log('===================================');
+
+        // ====================== FUNCIONES GLOBALES ======================
+        
+        /**
+         * Función para filtrar por período (llamada desde botones)
+         */
         function filtrarPeriodo(ruta) {
-            console.log('Filtrando por:', ruta);
+            console.log('Filtrando por período:', ruta);
+            
+            // Deshabilitar botones para evitar clicks múltiples
+            const botones = document.querySelectorAll('.boton_filtro');
+            botones.forEach(btn => btn.disabled = true);
+            
+            // Redirigir con la nueva ruta
             window.location.href = '${pageContext.request.contextPath}/Dashboard?ruta=' + ruta;
         }
+        
+        /**
+         * Función para reiniciar el estado después de cargar
+         */
+        function reiniciarEstado() {
+            const botones = document.querySelectorAll('.boton_filtro');
+            botones.forEach(btn => btn.disabled = false);
+        }
+
+        // ====================== INICIALIZACIÓN ======================
+        
+        // Reiniciar estado cuando se carga la página
+        window.addEventListener('load', function() {
+            reiniciarEstado();
+            
+            // Verificar si hay errores de JavaScript en datos
+            if (ventasDiarias.some(isNaN)) {
+                console.warn('Algunos valores de ventas diarias no son números válidos');
+            }
+            
+            if (isNaN(datosGenerales.ingresoTotal) || isNaN(datosGenerales.totalPedidos)) {
+                console.warn('Algunos datos generales no son números válidos');
+            }
+        });
+
+        // Manejar errores de carga de página
+        window.addEventListener('error', function(e) {
+            console.error('Error en la página del dashboard:', e.error);
+        });
+
     </script>
 
+    <!-- Cargar el JavaScript del dashboard -->
     <script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
 </body>
 </html>
