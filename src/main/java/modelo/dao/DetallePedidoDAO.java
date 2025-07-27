@@ -10,4 +10,6 @@ public interface DetallePedidoDAO {
     void actualizarCantidadDetalle(Long idDetalle, int nuevaCantidad);
     void eliminarDetallePedido(Long id);
     double calcularTotalPedido(Long idPedido);
+    DetallePedido obtenerDetallePedido(Long id);
+    List<String> adjuntarDetallePedido(DetallePedido detalle);
 }

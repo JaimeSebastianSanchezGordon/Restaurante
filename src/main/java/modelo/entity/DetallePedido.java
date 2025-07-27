@@ -22,6 +22,12 @@ public class DetallePedido implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(name = "idPedido")
+    private int idPedido;
+
+    @Column(name = "idPlato")
+    private int idPlato;
 
     @Column(name = "cantidad")
     private int cantidad;
@@ -47,6 +53,13 @@ public class DetallePedido implements Serializable {
         this.cantidad = cantidad;
         this.precio = precio;
     }
+    
+    public DetallePedido(int idPedido, int idPlato, int cantidad, float precio) {
+        this.idPedido = idPedido;
+        this.idPlato = idPlato;
+        this.cantidad = cantidad;
+        this.precio = precio;
+    }
 
     // Getters y Setters
     public Long getId() {
@@ -55,6 +68,22 @@ public class DetallePedido implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public int getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(int idPedido) {
+        this.idPedido = idPedido;
+    }
+
+    public int getIdPlato() {
+        return idPlato;
+    }
+
+    public void setIdPlato(int idPlato) {
+        this.idPlato = idPlato;
     }
 
     public int getCantidad() {
@@ -90,17 +119,17 @@ public class DetallePedido implements Serializable {
     }
 
     // Métodos de utilidad
-    public Long getIdPedido() {
+    public Long getIdPedido2() {
         return pedido != null ? pedido.getIdPedido() : null;
     }
 
-    public Long getIdPlato() {
+    public Long getIdPlato2() {
         return plato != null ? plato.getId() : null;
     }
 
     @Override
     public String toString() {
         return "DetallePedido [id=" + id + ", cantidad=" + cantidad + ", precio=" + precio + 
-               ", pedidoId=" + getIdPedido() + ", platoId=" + getIdPlato() + "]";
+               ", pedidoId=" + getIdPedido2() + ", platoId=" + getIdPlato2() + "]";
     }
 }

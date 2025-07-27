@@ -74,117 +74,39 @@
 		</section>
 
 		<section class="registroPedido">
-			<!-- Número pedido -->
-			<div class="numeroPedido">
-				<h3>Order #256482</h3>
-				<div>
-					<i class="fa-solid fa-xmark"></i>
-				</div>
-			</div>
-			<!-- Lista pedidos -->
-			<div class="Lista-pedidos">
-				<!-- Pedido 1 -->
-				<div class="Pedido">
-					<!-- Imagen -->
-					<div>
-						<img src="/imagenes/burger.jpg" alt="">
-					</div>
-					<!-- Nombre y precio -->
-					<div class="nombrePrecio-derecha">
-						<!-- Nombre -->
-						<div>
-							<p>Grill Sandwich</p>
-						</div>
-						<!-- Precio -->
-						<div>
-							<p>$30.00</p>
-						</div>
-					</div>
-					<!-- Selección cantidad -->
-					<div>
-						<!--  Boton menos -->
-						<div>
-							<i class="fa-solid fa-minus"></i>
-						</div>
-						<!-- Cantidad -->
-						<div class="aparte">
-							<p>1</p>
-						</div>
-						<!-- Boton mas -->
-						<div>
-							<i class="fa-solid fa-plus" style="color: #ffffff;"></i>
-						</div>
-					</div>
-				</div>
-				<!-- Pedido 2 -->
-				<div class="Pedido">
-					<!-- Imagen -->
-					<div>
-						<img src="/imagenes/popeyes.jpg" alt="">
-					</div>
-					<!-- Nombre y precio -->
-					<div class="nombrePrecio-derecha">
-						<!-- Nombre -->
-						<div>
-							<p>Chicken Popeyes</p>
-						</div>
-						<!-- Precio -->
-						<div>
-							<p>$20.00</p>
-						</div>
-					</div>
-					<!-- Selección cantidad -->
-					<div>
-						<!--  Boton menos -->
-						<div>
-							<i class="fa-solid fa-minus"></i>
-						</div>
-						<!-- Cantidad -->
-						<div>
-							<p>1</p>
-						</div>
-						<!-- Boton mas -->
-						<div>
-							<i class="fa-solid fa-plus" style="color: #ffffff;"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- Pago -->
-			<div class="pago">
-				<!-- Subtotal -->
-				<div>
-					<p>Subtotal</p>
-					<p>$50.00</p>
-				</div>
-				<!-- Impuestos -->
-				<div>
-					<p class="color_gris">Tax</p>
-					<p class="color_gris">$4.00</p>
-				</div>
-				<!-- Charges -->
-				<div>
-					<p class="color_gris">Charges</p>
-					<p class="color_gris">$16.00</p>
-				</div>
-				<!-- Línea -->
-				<hr>
-				<div>
-					<p>Total</p>
-					<p>$70.00</p>
-				</div>
-				<!-- Botón Ordenar -->
-				<a href="factura.html">
-					<div class="ordenarBoton">
-						<button class="btnOrdenar">Place Order</button>
-					</div>
-				</a>
-			</div>
-
-
-		</section>
+            <!-- Número pedido -->
+            <div class="numeroPedido" id="pedidoActual">
+                <div>
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+            <!-- Lista pedidos -->
+            <div class="Lista-pedidos">
+            	<div id="listaPedido">
+            
+            	</div>
+            </div>
+            <!-- Pago -->
+            <div class="pago">
+            	<div id="totalPago">
+            	
+            	</div>
+                
+                <!-- Botón Ordenar -->
+                <a href="factura.html">
+                    <div class="ordenarBoton">
+                        <button class="btnOrdenar">Place Order</button>
+                    </div>
+                </a>
+            </div>
+        </section>
 
 	</div>
+	<!-- Script -->
+    <script>
+    	const contextPath = '${pageContext.request.contextPath}';
+    </script>
+	<script src="${pageContext.request.contextPath}/js/registroPedido.js"></script>
 </body>
 
 </html>
