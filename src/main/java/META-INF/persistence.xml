@@ -19,25 +19,24 @@
             <property name="jakarta.persistence.jdbc.password" value="root"/>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 
-            <!-- Configuración alternativa SQL Server (comentada) -->
-            <!-- 
-            <property name="jakarta.persistence.jdbc.url" 
-                value="jdbc:sqlserver://localhost:1433;databaseName=Restaurante;encrypt=true;trustServerCertificate=true" />
-            <property name="jakarta.persistence.jdbc.user" value="sa" />
-            <property name="jakarta.persistence.jdbc.password" value="P@ssw0rd" />
-            <property name="jakarta.persistence.jdbc.driver" 
-                value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-            -->
-
-            <!-- Configuración DDL -->
+            <!-- 🔧 CONFIGURACIÓN DDL AUTOMÁTICA -->
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
             
-            <!-- Configuración de Logging para debug -->
+            <!-- 📊 CONFIGURACIÓN DE LOGGING PARA DEBUG -->
             <property name="eclipselink.logging.level" value="FINE"/>
             <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
-
+            
+            <!-- ⚡ CONFIGURACIÓN ADICIONAL -->
+            <property name="eclipselink.jpa.validate-existence" value="true"/>
+            <property name="eclipselink.target-database" value="MySQL"/>
+            
+            <!-- 🔍 CONFIGURACIÓN PARA FORZAR CREACIÓN DE TABLAS -->
+            <property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL.sql"/>
+            <property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL.sql"/>
+            <property name="eclipselink.application-location" value="./"/>
+            
         </properties>
     </persistence-unit>
 </persistence>
