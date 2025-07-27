@@ -26,6 +26,9 @@ public class Plato implements Serializable{
 	@Column(name = "estado", nullable = false, length = 20)
 	private String estado; // "en_stock", "fuera_stock", "limitado"
 
+	@Column(name = "tipo_plato", length = 255)
+	private String tipoPlato; // Comida, Bebebida, otros.
+	
 	@Column(name = "codigo_producto", unique = true, length = 20)
 	private String codigoProducto;
 
