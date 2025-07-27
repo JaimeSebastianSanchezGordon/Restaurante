@@ -22,7 +22,7 @@ public class JPAPedidoDAO implements PedidoDAO {
     }
 
     @Override
-    public Pedido getPedidoById(int idPedido) {
+    public Pedido getPedidoById(Long idPedido) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Pedido.class, idPedido);
@@ -82,7 +82,7 @@ public class JPAPedidoDAO implements PedidoDAO {
     }
 
     @Override
-    public void eliminarPedido(int idPedido) {
+    public void eliminarPedido(Long idPedido) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -110,7 +110,7 @@ public class JPAPedidoDAO implements PedidoDAO {
     }
 
     @Override
-    public void marcarPedidoComoPagado(int idPedido) {
+    public void marcarPedidoComoPagado(Long idPedido) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -131,7 +131,7 @@ public class JPAPedidoDAO implements PedidoDAO {
     }
 
     @Override
-    public double calcularTotalPedido(int idPedido) {
+    public double calcularTotalPedido(Long idPedido) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             Query query = em.createQuery(

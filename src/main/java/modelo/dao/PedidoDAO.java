@@ -5,10 +5,10 @@ import modelo.entity.Pedido;
 
 public interface PedidoDAO {
     List<Pedido> obtenerTodosLosPedidos();
-    Pedido getPedidoById(int idPedido);
+    Pedido getPedidoById(Long idPedido);
     void actualizarPedido(Pedido pedido);
     void actualizarPedidoConTotal(Pedido pedido, double total);
-    void eliminarPedido(int idPedido);
-    void marcarPedidoComoPagado(int idPedido);
-    double calcularTotalPedido(int idPedido);
+    void eliminarPedido(Long idPedido);
+    void marcarPedidoComoPagado(Long idPedido);
+    double calcularTotalPedido(Long idPedido);
 }

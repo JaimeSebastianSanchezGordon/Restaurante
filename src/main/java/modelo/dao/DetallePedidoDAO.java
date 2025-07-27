@@ -4,10 +4,10 @@ import java.util.List;
 import modelo.entity.DetallePedido;
 
 public interface DetallePedidoDAO {
-    List<DetallePedido> obtenerDetallesPorPedido(int idPedido);
+    List<DetallePedido> obtenerDetallesPorPedido(Long idPedido);
     void agregarDetallePedido(DetallePedido detalle);
     void actualizarDetallePedido(DetallePedido detalle);
-    void actualizarCantidadDetalle(int idDetalle, int nuevaCantidad);
-    void eliminarDetallePedido(int id);
-    double calcularTotalPedido(int idPedido);
+    void actualizarCantidadDetalle(Long idDetalle, int nuevaCantidad);
+    void eliminarDetallePedido(Long id);
+    double calcularTotalPedido(Long idPedido);
 }

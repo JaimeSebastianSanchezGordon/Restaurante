@@ -77,19 +77,18 @@ public class gestionPedidosController extends HttpServlet{
         request.setAttribute("pedidos", pedidos);
 
         if (!pedidos.isEmpty()) {
-            int idPedidoSeleccionado = obtenerIdPedidoSeleccionado(request, pedidos);
+            Long idPedidoSeleccionado = obtenerIdPedidoSeleccionado(request, pedidos);
             cargarDetallePedido(request, idPedidoSeleccionado);
         }
 
         getServletContext().getRequestDispatcher("/jsp/gestionPedidos.jsp").forward(request, response);
     }
 
-
-    private int obtenerIdPedidoSeleccionado(HttpServletRequest request, List<Pedido> pedidos) {
+    private Long obtenerIdPedidoSeleccionado(HttpServletRequest request, List<Pedido> pedidos) {
         String idPedidoParam = request.getParameter("idPedido");
         try {
             return (idPedidoParam != null && !idPedidoParam.isEmpty()) ?
-                    Integer.parseInt(idPedidoParam) : pedidos.get(0).getIdPedido();
+                    Long.parseLong(idPedidoParam) : pedidos.get(0).getIdPedido();
         } catch (NumberFormatException e) {
             return pedidos.get(0).getIdPedido();
         }
@@ -103,7 +102,7 @@ public class gestionPedidosController extends HttpServlet{
         String idPedidoParam = request.getParameter("idPedido");
         if (idPedidoParam != null && !idPedidoParam.isEmpty()) {
             try {
-                cargarDetallePedido(request, Integer.parseInt(idPedidoParam));
+                cargarDetallePedido(request, Long.parseLong(idPedidoParam));
             } catch (NumberFormatException e) {
                 request.setAttribute("error", "ID de pedido inválido");
             }
@@ -112,7 +111,7 @@ public class gestionPedidosController extends HttpServlet{
         getServletContext().getRequestDispatcher("/jsp/gestionPedidos.jsp").forward(request, response);
     }
 
-    private void cargarDetallePedido(HttpServletRequest request, int idPedidoSeleccionado) {
+    private void cargarDetallePedido(HttpServletRequest request, Long idPedidoSeleccionado) {
         Pedido pedidoSeleccionado = pedidoDAO.getPedidoById(idPedidoSeleccionado);
         List<DetallePedido> detallesPedido = detallePedidoDAO.obtenerDetallesPorPedido(idPedidoSeleccionado);
 
@@ -125,7 +124,7 @@ public class gestionPedidosController extends HttpServlet{
         String idPedidoParam = request.getParameter("idPedido");
         if (idPedidoParam != null && !idPedidoParam.isEmpty()) {
             try {
-                pedidoDAO.marcarPedidoComoPagado(Integer.parseInt(idPedidoParam));
+                pedidoDAO.marcarPedidoComoPagado(Long.parseLong(idPedidoParam));
                 request.setAttribute("mensaje", "Pedido ejecutado correctamente");
             } catch (NumberFormatException e) {
                 request.setAttribute("error", "ID de pedido inválido");
@@ -144,7 +143,7 @@ public class gestionPedidosController extends HttpServlet{
         }
 
         try {
-            int idPedido = Integer.parseInt(idPedidoParam);
+            Long idPedido = Long.parseLong(idPedidoParam);
             Pedido pedido = pedidoDAO.getPedidoById(idPedido);
             if (pedido == null) {
                 request.setAttribute("error", "Pedido no encontrado");
@@ -172,7 +171,7 @@ public class gestionPedidosController extends HttpServlet{
         }
 
         try {
-            int idPedido = Integer.parseInt(idPedidoParam);
+            Long idPedido = Long.parseLong(idPedidoParam);
             Pedido pedido = pedidoDAO.getPedidoById(idPedido);
 
             if (pedido == null) {
@@ -192,7 +191,7 @@ public class gestionPedidosController extends HttpServlet{
         this.mostrarFormularioActualizar(request, response);
     }
 
-    private void actualizarPedidoYDetalles(HttpServletRequest request, int idPedido) {
+    private void actualizarPedidoYDetalles(HttpServletRequest request, Long idPedido) {
         Pedido pedido = new Pedido();
         pedido.setIdPedido(idPedido);
         pedido.setNumMesa(Integer.parseInt(request.getParameter("numMesa")));
@@ -205,7 +204,7 @@ public class gestionPedidosController extends HttpServlet{
             if (nombreParam.startsWith("cantidades[")) {
                 try {
                     String idDetalleStr = nombreParam.substring(nombreParam.indexOf('[') + 1, nombreParam.indexOf(']'));
-                    int idDetalle = Integer.parseInt(idDetalleStr);
+                    Long idDetalle = Long.parseLong(idDetalleStr);
                     int nuevaCantidad = Integer.parseInt(request.getParameter(nombreParam));
 
                     detallePedidoDAO.actualizarCantidadDetalle(idDetalle, nuevaCantidad);
@@ -223,8 +222,8 @@ public class gestionPedidosController extends HttpServlet{
     private void eliminarPlato(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int idPedido = Integer.parseInt(request.getParameter("idPedido"));
-            int idDetalle = Integer.parseInt(request.getParameter("idDetalle"));
+            Long idPedido = Long.parseLong(request.getParameter("idPedido"));
+            Long idDetalle = Long.parseLong(request.getParameter("idDetalle"));
 
             detallePedidoDAO.eliminarDetallePedido(idDetalle);
 
@@ -235,13 +234,12 @@ public class gestionPedidosController extends HttpServlet{
         }
     }
 
-
     private void eliminarPedido(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idPedidoParam = request.getParameter("idPedido");
         if (idPedidoParam != null && !idPedidoParam.isEmpty()) {
             try {
-                pedidoDAO.eliminarPedido(Integer.parseInt(idPedidoParam));
+                pedidoDAO.eliminarPedido(Long.parseLong(idPedidoParam));
                 request.setAttribute("mensaje", "Pedido eliminado correctamente");
             } catch (NumberFormatException e) {
                 request.setAttribute("error", "ID de pedido inválido");

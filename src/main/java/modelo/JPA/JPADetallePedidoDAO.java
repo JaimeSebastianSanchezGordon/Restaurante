@@ -10,10 +10,10 @@ import util.JPAUtil;
 public class JPADetallePedidoDAO implements DetallePedidoDAO {
 
     @Override
-    public List<DetallePedido> obtenerDetallesPorPedido(int idPedido) {
+    public List<DetallePedido> obtenerDetallesPorPedido(Long idPedido) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            String jpql = "SELECT d FROM DetallePedido d WHERE d.idPedido = :idPedido";
+            String jpql = "SELECT d FROM DetallePedido d WHERE d.pedido.idPedido = :idPedido";
             Query query = em.createQuery(jpql, DetallePedido.class);
             query.setParameter("idPedido", idPedido);
             return query.getResultList();
@@ -57,7 +57,7 @@ public class JPADetallePedidoDAO implements DetallePedidoDAO {
     }
 
     @Override
-    public void actualizarCantidadDetalle(int idDetalle, int nuevaCantidad) {
+    public void actualizarCantidadDetalle(Long idDetalle, int nuevaCantidad) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -79,7 +79,7 @@ public class JPADetallePedidoDAO implements DetallePedidoDAO {
     }
 
     @Override
-    public void eliminarDetallePedido(int id) {
+    public void eliminarDetallePedido(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -101,7 +101,7 @@ public class JPADetallePedidoDAO implements DetallePedidoDAO {
     }
 
     @Override
-    public double calcularTotalPedido(int idPedido) {
+    public double calcularTotalPedido(Long idPedido) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             Query query = em.createQuery(

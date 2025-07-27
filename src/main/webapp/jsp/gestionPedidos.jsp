@@ -22,9 +22,9 @@
         </div>
 
         <nav class="menu_navegacion">
-            <a href="${pageContext.request.contextPath}/html/admin/finanzas.html" class="elemento_navegacion">
-                <i class="fas fa-th-large"></i>
-            </a>
+            <a href="${pageContext.request.contextPath}/Dashboard" class="elemento_navegacion">
+                    <i class="fas fa-th-large"></i>
+                </a>
             <a href="${pageContext.request.contextPath}/GestionarPedido" class="elemento_navegacion activo">
                 <i class="fas fa-file-alt"></i>
             </a>

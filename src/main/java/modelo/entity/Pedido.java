@@ -1,7 +1,7 @@
-// ==================== PEDIDO.JAVA ====================
 package modelo.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,6 +44,10 @@ public class Pedido implements Serializable {
     @Column(name = "invitados")
     private int invitados;
 
+    // NUEVO CAMPO PARA EL DASHBOARD
+    @Column(name = "fechaCreacion")
+    private LocalDateTime fechaCreacion;
+
     // Relación OneToMany con DetallePedido
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetallePedido> detalles = new ArrayList<>();
@@ -61,7 +66,15 @@ public class Pedido implements Serializable {
         this.invitados = invitados;
     }
 
-    // Getters y Setters
+    // Método que se ejecuta antes de persistir (guardar) la entidad
+    @PrePersist
+    protected void onCreate() {
+        if (fechaCreacion == null) {
+            fechaCreacion = LocalDateTime.now();
+        }
+    }
+
+    // Getters y Setters (incluyendo el nuevo campo)
     public Long getIdPedido() {
         return idPedido;
     }
@@ -118,6 +131,15 @@ public class Pedido implements Serializable {
         this.invitados = invitados;
     }
 
+    // NUEVO GETTER Y SETTER PARA FECHA
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
     public List<DetallePedido> getDetalles() {
         return detalles;
     }
@@ -141,6 +163,7 @@ public class Pedido implements Serializable {
     public String toString() {
         return "Pedido [idPedido=" + idPedido + ", estado=" + estado + ", numMesa=" + numMesa + 
                ", formaPago=" + formaPago + ", cantidadPagar=" + cantidadPagar + 
-               ", nombreCliente=" + nombreCliente + ", invitados=" + invitados + "]";
+               ", nombreCliente=" + nombreCliente + ", invitados=" + invitados + 
+               ", fechaCreacion=" + fechaCreacion + "]";
     }
 }

@@ -1,0 +1,317 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lexend', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.contenedor_panel {
+    display: flex;
+    min-height: 100vh;
+}
+
+.barra_lateral {
+    width: 80px;
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    background-color: #F67F20;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.logo i {
+    color: white;
+    font-size: 24px;
+}
+
+.menu_navegacion {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.elemento_navegacion {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.elemento_navegacion:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.elemento_navegacion.activo {
+    background-color: #F67F20;
+    color: white;
+}
+
+.elemento_navegacion i {
+    font-size: 18px;
+}
+
+.contenido_principal {
+    flex: 1;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 30px;
+}
+
+.encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.encabezado h1 {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.filtros_tiempo {
+    display: flex;
+    gap: 10px;
+}
+
+.boton_filtro {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.boton_filtro:hover {
+    background-color: #e0e0e0;
+}
+
+.boton_filtro.activo {
+    background-color: #F67F20;
+    color: white;
+}
+
+.estadisticas_superiores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 10px;
+}
+
+.tarjeta_estadistica {
+    background-color: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.tarjeta_estadistica h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.grafico_dona {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+}
+
+.centro_grafico {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.leyenda {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.elemento_leyenda {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.punto {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.punto.naranja { background-color: #F67F20; }
+.punto.negro { background-color: #333; }
+.punto.gris { background-color: #e0e0e0; }
+
+.monto_saldo {
+    font-size: 36px;
+    font-weight: 600;
+    text-align: center;
+    color: #4CB255;
+    margin-bottom: 30px;
+}
+
+.elemento_saldo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.icono_saldo {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.icono_saldo.negro {
+    background-color: #333;
+}
+
+.icono_saldo.naranja {
+    background-color: #F67F20;
+}
+
+.info_saldo {
+    flex: 1;
+}
+
+.info_saldo p:first-child {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.info_saldo .monto {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.porcentaje {
+    font-size: 13px;
+    color: #999;
+}
+
+.seccion_inferior {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.tarjeta_grafico {
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    min-height: 350px;
+}
+
+.tarjeta_grafico h3 {
+    font-size: 18px;
+    font-weight: bolder;
+    margin-bottom: 25px;
+}
+
+#graficoDiario {
+    width: 100%;
+    height: 280px;
+    max-width: 100%;
+}
+
+.mejores_platos {
+    background-color: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.mejores_platos h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.encabezado_platos {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.elemento_plato {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.elemento_plato:last-child {
+    margin-bottom: 0;
+}
+
+.imagen_plato {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    margin-right: 15px;
+    background-color: #e0e0e0;
+    object-fit: cover;
+}
+
+.info_plato {
+    flex: 1;
+}
+
+.nombre_plato {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.precio_plato {
+    font-size: 14px;
+    color: #F67F20;
+}
+
+.cantidad_pedidos {
+    font-size: 18px;
+    font-weight: 600;
+}
