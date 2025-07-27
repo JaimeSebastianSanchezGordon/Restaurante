@@ -80,7 +80,7 @@ public class RegistrarPedidoController extends HttpServlet{
 		pedido.setEstado("En proceso");
 		pedido.setFormaPago("Pendiente");
 		System.out.println("Paso por registrar pedido");
-		int idPedido = pedidoDAO.registrarPedido(pedido);
+		long idPedido = pedidoDAO.registrarPedido(pedido);
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 	    out.print("{\"success\": true, \"idPedido\": " + idPedido + "}");
