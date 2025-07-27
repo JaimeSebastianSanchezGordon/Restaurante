@@ -10,6 +10,7 @@
         <class>modelo.entity.Plato</class>
         <class>modelo.entity.Pedido</class>
         <class>modelo.entity.DetallePedido</class>
+        <class>modelo.entity.Usuario</class>
 
         <properties>
             <!-- Configuración de conexión a la base de datos -->
@@ -26,7 +27,7 @@
                 - "create-or-extend-tables": Crea nuevas tablas o agrega columnas faltantes
                 - "none": No hace nada (configuración anterior)
             -->
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
             
             <!-- 📍 ALTERNATIVA SEGURA: Solo crear si no existen -->
             <!-- <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/> -->
