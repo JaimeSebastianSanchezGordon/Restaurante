@@ -15,7 +15,8 @@ public class JPAEstadoPedidoDAO implements EstadoPedidoDAO {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             String jpql = "SELECT new modelo.dto.EstadoPedidoDTO(p.idPedido, p.estadoPreparacion) " +
-                    "FROM Pedido p ";
+                    "FROM Pedido p "+
+                    "WHERE p.estadoPreparacion IN ('listo', 'en preparacion')";
             TypedQuery<EstadoPedidoDTO> query = em.createQuery(jpql, EstadoPedidoDTO.class);
             return query.getResultList();
         } finally {
@@ -28,7 +29,8 @@ public class JPAEstadoPedidoDAO implements EstadoPedidoDAO {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             String jpql = "SELECT new modelo.dto.EstadoPedidoDTO(p.idPedido, p.estadoPreparacion) " +
-                    "FROM Pedido p WHERE p.idPedido = :id";
+                    "FROM Pedido p WHERE p.idPedido = :id" +
+                    "AND p.estadoPreparacion IN ('listo', 'en preparacion')";
             TypedQuery<EstadoPedidoDTO> query = em.createQuery(jpql, EstadoPedidoDTO.class);
             query.setParameter("id", idPedido);
 
