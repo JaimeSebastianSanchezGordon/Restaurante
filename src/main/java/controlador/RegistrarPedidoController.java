@@ -56,19 +56,9 @@ public class RegistrarPedidoController extends HttpServlet{
         case "listarPedidos" -> listarPedidos(req, resp);
         case "modificarCantidad" -> modificarCantidad(req, resp);
         case "sumaTotal" -> sumaTotal(req, resp);
-        /*
-        
-        
-        case "registroOrden" -> registroOrden(req, resp);
-        
-        */
         default -> {
-        	/*
             LOGGER.warning("Ruta no reconocida: " + ruta);
             listarPedidos(req, resp);
-            */
-        	System.out.println("Hola");
-        	System.out.println(ruta);
         }
     }
 	}
@@ -80,7 +70,7 @@ public class RegistrarPedidoController extends HttpServlet{
 		pedido.setEstado("En proceso");
 		pedido.setFormaPago("Pendiente");
 		System.out.println("Paso por registrar pedido");
-		int idPedido = pedidoDAO.registrarPedido(pedido);
+		Long idPedido = pedidoDAO.registrarPedido(pedido);
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 	    out.print("{\"success\": true, \"idPedido\": " + idPedido + "}");
@@ -97,8 +87,8 @@ public class RegistrarPedidoController extends HttpServlet{
 		System.out.println("Valores: " + idPedido + ", " + idPlato + ", " + cantidad);
 		
 		DetallePedido detallePedido = new DetallePedido();
-		detallePedido.setIdPedido(idPedido);
-		detallePedido.setIdPlato(idPlato);
+		detallePedido.setIdPed(idPedido);
+		detallePedido.setIdPla(idPlato);
 		detallePedido.setCantidad(cantidad);
 		
 		detallePedidoDAO.agregarDetallePedido(detallePedido);
@@ -111,12 +101,16 @@ public class RegistrarPedidoController extends HttpServlet{
 		
 		System.out.println("idPedido: " + idPedido);
 		
-		List<DetallePedido> detallesPedido = detallePedidoDAO.obtenerDetallesPorPedido(idPedido);
+		List<DetallePedido> detallesPedido = detallePedidoDAO.obtenerDetallesPorPedidoPed(Long.valueOf(idPedido));
+		if(detallesPedido.get(0) == null) {
+			System.out.println("No hay lista");
+		}
+		
 		List<DetallePedidoDTO> listaDTO = new ArrayList<>();
 		
 		for(DetallePedido detalle : detallesPedido) {
-			Plato plato = platoDAO.obtenerPlato(Long.valueOf(detalle.getIdPlato()));
-			DetallePedidoDTO detalleDTO = new DetallePedidoDTO(plato.getNombrePlato(), plato.getPrecio(), detalle.getCantidad(), detalle.getId());
+			Plato plato = platoDAO.obtenerPlato(Long.valueOf(detalle.getIdPla()));
+			DetallePedidoDTO detalleDTO = new DetallePedidoDTO(plato.getNombrePlato(), plato.getPrecio(), detalle.getCantidad(), Long.valueOf(detalle.getId()));
 			listaDTO.add(detalleDTO);
 		}
 	
@@ -133,7 +127,7 @@ public class RegistrarPedidoController extends HttpServlet{
 		int idPedido = Integer.parseInt(req.getParameter("idDetallePedido"));
         String accion = req.getParameter("accion");
         
-        DetallePedido detallePedido = detallePedidoDAO.obtenerDetallePedido(idPedido);
+        DetallePedido detallePedido = detallePedidoDAO.obtenerDetallePedido(Long.valueOf(idPedido));
         
         if (detallePedido != null) {
             int cantidadActual = detallePedido.getCantidad();
@@ -160,10 +154,10 @@ public class RegistrarPedidoController extends HttpServlet{
 		double subtotal = 0.0, impuesto = 0.0, total = 0.0, IVA = 0.12;
 		int idPedido = Integer.parseInt(req.getParameter("idPedido"));
 		
-		List<DetallePedido> detallesPedido = detallePedidoDAO.obtenerDetallesPorPedido(idPedido);
+		List<DetallePedido> detallesPedido = detallePedidoDAO.obtenerDetallesPorPedidoPed(Long.valueOf(idPedido));
 		
 		for(DetallePedido detalle : detallesPedido) {
-			Plato plato = platoDAO.obtenerPlato(Long.valueOf(detalle.getIdPlato()));
+			Plato plato = platoDAO.obtenerPlato(Long.valueOf(detalle.getIdPla()));
 			double precioPlato = plato.getPrecio();
 			int cantidad = detalle.getCantidad();
 			
@@ -172,7 +166,7 @@ public class RegistrarPedidoController extends HttpServlet{
 		
 		impuesto = subtotal * IVA;
 		total = subtotal + impuesto;
-		Pedido pedido = pedidoDAO.getPedidoById(idPedido);
+		Pedido pedido = pedidoDAO.getPedidoById(Long.valueOf(idPedido));
 		pedidoDAO.actualizarPedidoConTotal(pedido, total);
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
