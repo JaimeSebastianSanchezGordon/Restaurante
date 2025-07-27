@@ -1,5 +1,6 @@
 package modelo.JPA;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +31,17 @@ public class JPADashboardDAO implements DashboardDAO {
             query.setParameter("fechaInicio", inicioDateTime);
             query.setParameter("fechaFin", finDateTime);
             
-            Double resultado = (Double) query.getSingleResult();
-            return resultado != null ? resultado : 0.0;
+            Object resultado = query.getSingleResult();
+            
+            // Manejar tanto Double como BigDecimal
+            if (resultado instanceof BigDecimal) {
+                return ((BigDecimal) resultado).doubleValue();
+            } else if (resultado instanceof Double) {
+                return (Double) resultado;
+            } else {
+                return 0.0;
+            }
+            
         } finally {
             em.close();
         }
@@ -86,8 +96,15 @@ public class JPADashboardDAO implements DashboardDAO {
             queryAnterior.setParameter("fechaInicio", inicioAnteriorDateTime);
             queryAnterior.setParameter("fechaFin", finAnteriorDateTime);
             
-            Double ingresoAnterior = (Double) queryAnterior.getSingleResult();
-            ingresoAnterior = ingresoAnterior != null ? ingresoAnterior : 0.0;
+            Object resultadoAnterior = queryAnterior.getSingleResult();
+            Double ingresoAnterior = 0.0;
+            
+            // Manejar tanto Double como BigDecimal
+            if (resultadoAnterior instanceof BigDecimal) {
+                ingresoAnterior = ((BigDecimal) resultadoAnterior).doubleValue();
+            } else if (resultadoAnterior instanceof Double) {
+                ingresoAnterior = (Double) resultadoAnterior;
+            }
             
             // Calcular porcentaje de crecimiento
             if (ingresoAnterior > 0) {
@@ -121,7 +138,16 @@ public class JPADashboardDAO implements DashboardDAO {
             query.setParameter("fechaInicio", inicioDateTime);
             query.setParameter("fechaFin", finDateTime);
             
-            return query.getResultList();
+            List<Object[]> resultados = query.getResultList();
+            
+            // Convertir BigDecimal a Double en los resultados
+            for (Object[] fila : resultados) {
+                if (fila[1] instanceof BigDecimal) {
+                    fila[1] = ((BigDecimal) fila[1]).doubleValue();
+                }
+            }
+            
+            return resultados;
             
         } finally {
             em.close();
@@ -152,7 +178,21 @@ public class JPADashboardDAO implements DashboardDAO {
             query.setParameter("fechaFin", finDateTime);
             query.setMaxResults(10); // Top 10 platos
             
-            return query.getResultList();
+            List<Object[]> resultados = query.getResultList();
+            
+            // Convertir BigDecimal/BigInteger a tipos esperados
+            for (Object[] fila : resultados) {
+                // fila[1] = precio (puede ser BigDecimal)
+                if (fila[1] instanceof BigDecimal) {
+                    fila[1] = ((BigDecimal) fila[1]).doubleValue();
+                }
+                // fila[3] = cantidad (puede ser BigDecimal)
+                if (fila[3] instanceof BigDecimal) {
+                    fila[3] = ((BigDecimal) fila[3]).longValue();
+                }
+            }
+            
+            return resultados;
             
         } finally {
             em.close();
@@ -180,7 +220,8 @@ public class JPADashboardDAO implements DashboardDAO {
             );
             queryComida.setParameter("fechaInicio", inicioDateTime);
             queryComida.setParameter("fechaFin", finDateTime);
-            Double totalComida = (Double) queryComida.getSingleResult();
+            Object resultadoComida = queryComida.getSingleResult();
+            Double totalComida = convertirADouble(resultadoComida);
 
             // Bebida Fría (platos <= $20 y > $10)
             Query queryBebida = em.createQuery(
@@ -193,7 +234,8 @@ public class JPADashboardDAO implements DashboardDAO {
             );
             queryBebida.setParameter("fechaInicio", inicioDateTime);
             queryBebida.setParameter("fechaFin", finDateTime);
-            Double totalBebida = (Double) queryBebida.getSingleResult();
+            Object resultadoBebida = queryBebida.getSingleResult();
+            Double totalBebida = convertirADouble(resultadoBebida);
 
             // Otros (platos <= $10)
             Query queryOtros = em.createQuery(
@@ -206,16 +248,32 @@ public class JPADashboardDAO implements DashboardDAO {
             );
             queryOtros.setParameter("fechaInicio", inicioDateTime);
             queryOtros.setParameter("fechaFin", finDateTime);
-            Double totalOtros = (Double) queryOtros.getSingleResult();
+            Object resultadoOtros = queryOtros.getSingleResult();
+            Double totalOtros = convertirADouble(resultadoOtros);
 
-            distribucion.put("Comida", totalComida != null ? totalComida : 0.0);
-            distribucion.put("Bebida Fría", totalBebida != null ? totalBebida : 0.0);
-            distribucion.put("Otros", totalOtros != null ? totalOtros : 0.0);
+            distribucion.put("Comida", totalComida);
+            distribucion.put("Bebida Fría", totalBebida);
+            distribucion.put("Otros", totalOtros);
 
             return distribucion;
 
         } finally {
             em.close();
+        }
+    }
+    
+    // Método helper para convertir Object a Double
+    private Double convertirADouble(Object valor) {
+        if (valor == null) {
+            return 0.0;
+        } else if (valor instanceof BigDecimal) {
+            return ((BigDecimal) valor).doubleValue();
+        } else if (valor instanceof Double) {
+            return (Double) valor;
+        } else if (valor instanceof Number) {
+            return ((Number) valor).doubleValue();
+        } else {
+            return 0.0;
         }
     }
 }

@@ -6,37 +6,63 @@
 
     <persistence-unit name="Restaurante">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        
-        <!-- Entidades del modelo -->
+
         <class>modelo.entity.Plato</class>
         <class>modelo.entity.Pedido</class>
         <class>modelo.entity.DetallePedido</class>
 
         <properties>
-            <!-- Configuración de Base de Datos MySQL -->
+            <!-- Configuración de conexión a la base de datos -->
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/restaurante"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="root"/>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 
-            <!-- 🔧 CONFIGURACIÓN DDL AUTOMÁTICA -->
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
-            <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            <!-- 🔧 CAMBIO PRINCIPAL: Auto-generación de tablas -->
+            <!-- 
+                Opciones disponibles:
+                - "create-tables": Crea las tablas si no existen
+                - "drop-and-create-tables": Elimina y recrea las tablas (¡CUIDADO! Borra datos)
+                - "create-or-extend-tables": Crea nuevas tablas o agrega columnas faltantes
+                - "none": No hace nada (configuración anterior)
+            -->
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
             
-            <!-- 📊 CONFIGURACIÓN DE LOGGING PARA DEBUG -->
+            <!-- 📍 ALTERNATIVA SEGURA: Solo crear si no existen -->
+            <!-- <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/> -->
+
+            <!-- 🚨 SOLO PARA DESARROLLO: Recrear todo (BORRA DATOS EXISTENTES) -->
+            <!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/> -->
+
+            <!-- Configuración adicional para DDL -->
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            
+            <!-- 💾 OPCIONAL: Generar también scripts SQL -->
+            <!-- <property name="eclipselink.ddl-generation.output-mode" value="both"/> -->
+            <!-- <property name="eclipselink.application-location" value="./sql-scripts/"/> -->
+            <!-- <property name="eclipselink.create-ddl-jdbc-file-name" value="create-tables.sql"/> -->
+            <!-- <property name="eclipselink.drop-ddl-jdbc-file-name" value="drop-tables.sql"/> -->
+
+            <!-- Configuración de logging -->
             <property name="eclipselink.logging.level" value="FINE"/>
-            <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
             
-            <!-- ⚡ CONFIGURACIÓN ADICIONAL -->
-            <property name="eclipselink.jpa.validate-existence" value="true"/>
+            <!-- 📝 OPCIONAL: Mostrar SQL generado -->
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.level.cache" value="FINE"/>
+
+            <!-- Configuración de conexión adicional -->
+            <property name="eclipselink.connection-pool.default.initial" value="5"/>
+            <property name="eclipselink.connection-pool.default.min" value="5"/>
+            <property name="eclipselink.connection-pool.default.max" value="20"/>
+
+            <!-- Configuración específica de MySQL -->
             <property name="eclipselink.target-database" value="MySQL"/>
             
-            <!-- 🔍 CONFIGURACIÓN PARA FORZAR CREACIÓN DE TABLAS -->
-            <property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL.sql"/>
-            <property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL.sql"/>
-            <property name="eclipselink.application-location" value="./"/>
-            
+            <!-- Configuración de charset para evitar problemas con caracteres especiales -->
+            <property name="eclipselink.jdbc.connection-pool.default.url" 
+                      value="jdbc:mysql://localhost:3306/restaurante?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"/>
+
         </properties>
     </persistence-unit>
 </persistence>
