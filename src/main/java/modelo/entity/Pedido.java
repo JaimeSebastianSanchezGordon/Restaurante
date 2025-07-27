@@ -39,8 +39,10 @@ public class Pedido implements Serializable {
     @Column(name = "invitados")
     private int invitados;
 
+    private String estadoPreparacion;
+
     public Pedido(int idPedido, String estado, int numMesa, String formaPago, float cantidadPagar,
-                  String nombreCliente, int invitados) {
+                  String nombreCliente, int invitados, String estadoPreparacion) {
         this.idPedido = idPedido;
         this.estado = estado;
         this.numMesa = numMesa;
@@ -48,6 +50,7 @@ public class Pedido implements Serializable {
         this.cantidadPagar = cantidadPagar;
         this.nombreCliente = nombreCliente;
         this.invitados = invitados;
+        this.estadoPreparacion = estadoPreparacion;
     }
 
     public Pedido() {
@@ -110,6 +113,13 @@ public class Pedido implements Serializable {
 
     public void setInvitados(int invitados) {
         this.invitados = invitados;
+    }
+
+    public String getEstadoPreparacion() {
+        return estadoPreparacion;
+    }
+    public void setEstadoPreparacion(String estadoPreparacion) {
+        this.estadoPreparacion = estadoPreparacion;
     }
 
     @Override

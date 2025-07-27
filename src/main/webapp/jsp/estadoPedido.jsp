@@ -1,0 +1,114 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos</title>
+    <script src="https://kit.fontawesome.com/80cfa4399f.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estadoPedido.css">
+</head>
+
+<body>
+<div class="contenedor_panel">
+    <aside class="barra_lateral">
+        <div class="logo fa_borde_b">
+            <i class="fa-brands fa-slack fa_navegacion_activo fa_tam_principal"></i>
+        </div>
+        <a href="/html/cliente/dashboard.html" class="elemento_navegacion">
+            <i class="fas fa-home fa_navegacion_activo fa_tam"></i>
+        </a>
+        <a href="#" class="elemento_navegacion">
+            <i class="fas fa-users fa_navegacion_inactivo fa_tam"></i>
+        </a>
+        <a href="/html/cliente/historialFactura.html" class="elemento_navegacion">
+            <i class="fas fa-file-alt fa_navegacion_inactivo fa_tam"></i>
+        </a>
+        <a href="/html/cliente/menu.html" class="elemento_navegacion">
+            <i class="fas fa-hamburger fa_navegacion_inactivo fa_tam"></i>
+        </a>
+        <a href="/html/cliente/loginUsuario.html" class="elemento_navegacion fa_navegacion_inactivo fa_tam">
+            <i class="fa-solid fa-person-walking-arrow-right"></i>
+        </a>
+    </aside>
+
+    <main class="contenido_principal">
+        <div class="panel_pedidos">
+            <section class="encabezado">
+                <div class="titulo">
+                    <h1>Estado de Pedidos</h1>
+                </div>
+                <div class="busqueda_pedido">
+                    <form action="${pageContext.request.contextPath}/EstadoPedidoController" method="post" class="d-flex">
+                        <input type="hidden" name="ruta" value="verEstadoPedidoPorId">
+                        <input type="text" name="idPedido" class="form-control me-2" placeholder="Buscar por ID de pedido">
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                    </form>
+                </div>
+            </section>
+
+            <c:if test="${not empty estadoPedido}">
+                <div class="encabezado_pedidos mb-4">
+                    <h2>Detalle del Pedido</h2>
+                    <span class="numero_pedido">Pedido #${estadoPedido.id}</span>
+                    <c:choose>
+                        <c:when test="${estadoPedido.estadoPreparacion == 'listo'}">
+                            <span class="pedido_estado estado_preparado">Pedido listo</span>
+                        </c:when>
+                        <c:when test="${estadoPedido.estadoPreparacion == 'en preparacion'}">
+                            <span class="pedido_estado estado_preparando">En preparación</span>
+                        </c:when>
+                    </c:choose>
+                </div>
+            </c:if>
+
+            <c:if test="${not empty error}">
+                <div class="alert alert-danger mb-4" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>${error}
+                </div>
+            </c:if>
+
+            <div class="lista_pedidos">
+                <div class="titulo_lista">Todos los Pedidos</div>
+
+                <c:choose>
+                    <c:when test="${not empty estadoPedidos}">
+                        <c:forEach items="${estadoPedidos}" var="pedido">
+                            <div class="pedido_item mb-3">
+                                <div class="pedido_header">
+                                    <span class="pedido_id">Pedido #${pedido.id}</span>
+                                    <c:choose>
+                                        <c:when test="${pedido.estadoPreparacion == 'listo'}">
+                                            <span class="pedido_estado estado_preparado">Pedido listo</span>
+                                        </c:when>
+                                        <c:when test="${pedido.estadoPreparacion == 'en preparacion'}">
+                                            <span class="pedido_estado estado_preparando">En preparación</span>
+                                        </c:when>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="alert alert-info">
+                            No hay pedidos registrados actualmente.
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/estadoPedido.js"></script>
+</body>
+</html>

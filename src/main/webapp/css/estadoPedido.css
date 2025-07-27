@@ -1,0 +1,162 @@
+@charset "UTF-8";
+
+*{
+    font-family: "Lexend";
+}
+
+body{
+    position: relative;
+    margin: 0;
+}
+.contenedor_panel {
+    display: flex;
+}
+
+.barra_lateral {
+    height: 100%;
+    width: 5%;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-around;
+    border-right:  1px solid #DDDDDD;
+}
+.logo{
+    padding-bottom: 17px;
+}
+
+.fa_tam_principal{
+    font-size: 30px;
+}
+
+.fa_tam{
+    font-size: 25px;
+}
+
+.fa_navegacion_activo {
+    color: #EE791C;
+}
+
+.color_naranja {
+    color: #EE791C;
+}
+.color_gris{
+    color: #BBBBBB;
+}
+
+.color_blanco{
+    color: white;
+}
+
+.fa_navegacion_inactivo {
+    color: #BBBBBB;
+}
+.fa_borde_b{
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.barra_lateral i:hover{
+    color: #EE791C;
+}
+
+.contenido_principal {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    gap: 100px;
+    margin-left: 110px;
+}
+.panel_pedidos {
+    width: 90%;
+    margin-left: 30px;
+
+}
+.encabezado_pedidos {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.encabezado_pedidos h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+.numero_pedido {
+    font-size: 18px;
+    color: #666;
+}
+.estado_preparacion {
+    background-color: #4CB255;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: auto;
+}
+.lista_pedidos {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+.titulo_lista {
+    padding: 20px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+}
+.pedido_item {
+    padding: 20px 25px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.pedido_item:hover {
+    background-color: #f8f9fa;
+}
+.pedido_item.activo {
+    background-color: #F67F20;
+    color: white;
+}
+.pedido_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.pedido_id {
+    font-weight: 600;
+    font-size: 15px;
+}
+.pedido_estado {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+}
+.estado_preparado {
+    background-color: #4CB255;
+    color: white;
+}
+.estado_preparando {
+    background-color: #FFA500;
+    color: white;
+}
+.pedido_info {
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+}
+.pedido_item.activo .pedido_info {
+    color: rgba(255,255,255,0.8);
+}
+.pedido_precio {
+    font-weight: 600;
+    color: #333;
+}
+.pedido_item.activo .pedido_precio {
+    color: white;
+}
