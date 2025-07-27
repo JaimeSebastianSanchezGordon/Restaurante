@@ -10,12 +10,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import modelo.JPA.JPAPedidoDAO;
 import modelo.JPA.JPADetallePedidoDAO;
 import modelo.dao.PedidoDAO;
 import modelo.dao.DetallePedidoDAO;
 import modelo.entity.Pedido;
 import modelo.entity.DetallePedido;
+import modelo.entity.Usuario;
 
 @WebServlet("/GestionarPedido")
 public class gestionPedidosController extends HttpServlet{
@@ -41,33 +43,40 @@ public class gestionPedidosController extends HttpServlet{
     }
 
     private void rutear(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession sesion = request.getSession();
+        Usuario usuario = (Usuario) sesion.getAttribute("usuarioAutorizado");
+
+        if (usuario == null) {
         String ruta = (request.getParameter("ruta") == null) ? "listar" : request.getParameter("ruta");
 
-        switch (ruta) {
-            case "listar":
-                this.listarPedidos(request, response);
-                break;
-            case "verDetalle":
-                this.verDetallePedido(request, response);
-                break;
-            case "actualizarPedido":
-                this.mostrarFormularioActualizar(request, response);
-                break;
-            case "aceptarCambios":
-                this.aceptarCambios(request, response);
-                break;
-            case "eliminar":
-                this.eliminarPedido(request, response);
-                break;
-            case "ejecutar":
-                this.ejecutarPedido(request, response);
-                break;
-            case "eliminarPlato":
-                this.eliminarPlato(request, response);
-                break;
-            default:
-                this.listarPedidos(request, response);
-                break;
+            switch (ruta) {
+                case "listar":
+                    this.listarPedidos(request, response);
+                    break;
+                case "verDetalle":
+                    this.verDetallePedido(request, response);
+                    break;
+                case "actualizarPedido":
+                    this.mostrarFormularioActualizar(request, response);
+                    break;
+                case "aceptarCambios":
+                    this.aceptarCambios(request, response);
+                    break;
+                case "eliminar":
+                    this.eliminarPedido(request, response);
+                    break;
+                case "ejecutar":
+                    this.ejecutarPedido(request, response);
+                    break;
+                case "eliminarPlato":
+                    this.eliminarPlato(request, response);
+                    break;
+                default:
+                    this.listarPedidos(request, response);
+                    break;
+            }
+        } else {
+            response.sendRedirect("ingreso");
         }
     }
 

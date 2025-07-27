@@ -22,39 +22,27 @@ public class loginController extends HttpServlet {
 			throws ServletException, IOException {
 		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 	}
-	
-	private void ruteador(HttpServletRequest request, HttpServletResponse response) {
-		
-		
-	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String usuario = request.getParameter("usuario");
-		System.out.println(usuario + " " + email + " " + password);
+		System.out.println(email + " " + password);
 		
 		UsuarioDAO usuarioDAO = new JPAUsuarioDAO();
 		
-		Usuario usuarioAutorizado = usuarioDAO.autorizar(email, password, usuario);
+		Usuario usuarioAutorizado = usuarioDAO.autorizar(email, password);
 		System.out.println(usuarioAutorizado);
 		
 		if	(usuarioAutorizado != null) {
 			
 			HttpSession sesion = request.getSession();
 			sesion.setAttribute("usuarioAutorizado", usuarioAutorizado);
-			
-			if	(usuarioAutorizado.getTipo().equals("cliente")) {	
-				System.out.println("LISTADO DE LOS PLATOS");
-				response.sendRedirect(request.getContextPath() + "/ListarPlatos");
-			} else {
-				response.sendRedirect(request.getContextPath() + "/Dashboard");
-			}
+			response.sendRedirect(request.getContextPath() + "/Dashboard");
+
 		} else {
 			System.out.println("USUARIO NO REGISTRADO");
 			response.sendRedirect(request.getContextPath() + "/ingreso");
-			
 		}
 		
 	}

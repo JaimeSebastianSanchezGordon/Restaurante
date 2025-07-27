@@ -13,10 +13,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import modelo.JPA.JPADashboardDAO;
 import modelo.dao.DashboardDAO;
 import modelo.entity.Pedido;
 import modelo.entity.Plato;
+import modelo.entity.Usuario;
 
 @WebServlet("/Dashboard")
 public class DashboardController extends HttpServlet {
@@ -43,30 +45,38 @@ public class DashboardController extends HttpServlet {
 
     private void rutear(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+
+        HttpSession sesion = request.getSession();
+        Usuario usuario = (Usuario) sesion.getAttribute("usuarioAutorizado");
+
+        if (usuario != null) {
         String ruta = (request.getParameter("ruta") == null) ? "dashboard" : request.getParameter("ruta");
 
-        switch (ruta) {
-            case "dashboard":
-                this.mostrarDashboard(request, response);
-                break;
-            case "filtrarHoy":
-                this.filtrarPorHoy(request, response);
-                break;
-            case "filtrarSemana":
-                this.filtrarPorSemana(request, response);
-                break;
-            case "filtrarMes":
-                this.filtrarPorMes(request, response);
-                break;
-            case "filtrarAno":
-                this.filtrarPorAno(request, response);
-                break;
-            case "obtenerDatosGrafico":
-                this.obtenerDatosGrafico(request, response);
-                break;
-            default:
-                this.mostrarDashboard(request, response);
-                break;
+            switch (ruta) {
+                case "dashboard":
+                    this.mostrarDashboard(request, response);
+                    break;
+                case "filtrarHoy":
+                    this.filtrarPorHoy(request, response);
+                    break;
+                case "filtrarSemana":
+                    this.filtrarPorSemana(request, response);
+                    break;
+                case "filtrarMes":
+                    this.filtrarPorMes(request, response);
+                    break;
+                case "filtrarAno":
+                    this.filtrarPorAno(request, response);
+                    break;
+                case "obtenerDatosGrafico":
+                    this.obtenerDatosGrafico(request, response);
+                    break;
+                default:
+                    this.mostrarDashboard(request, response);
+                    break;
+            }
+        } else {
+            response.sendRedirect("ingreso");
         }
     }
 

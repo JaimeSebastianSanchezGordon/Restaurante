@@ -22,15 +22,15 @@
             <form action="<%= request.getContextPath() %>/registroCliente" method="post">               
                 <div class="input-group">
                     <i class="fa-solid fa-at color_naranja"></i>
-                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="email" name="email" placeholder="Email Address  - Empleado" required>
                 </div>
                 
                 <div class="input-group">
                     <i class="fa-solid fa-lock color_naranja"></i>
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="Password  - Empleado" required>
                 </div>
                 
-                <button type="submit" class="btnLogin">Crear cuenta de cliente</button>
+                <button type="submit" class="btnLogin">Crear cuenta de empleado</button>
             </form>
         </div>
     </section>

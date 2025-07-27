@@ -25,15 +25,14 @@ public class RegistroController extends HttpServlet {
 			throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		System.out.println(email + " " + password + " Cliente");
-		
+
 		UsuarioDAO usuarioDAO = new JPAUsuarioDAO();
 		
-		Usuario usuario = new Usuario(email, password, "cliente");
+		Usuario usuario = new Usuario(email, password);
 		
 		usuarioDAO.crear(usuario);
 		
-		response.sendRedirect("jsp/login.jsp");
+		response.sendRedirect("/ingreso");
 		
 		
 	}

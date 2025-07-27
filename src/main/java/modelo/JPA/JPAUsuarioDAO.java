@@ -21,14 +21,13 @@ public class JPAUsuarioDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public Usuario autorizar(String email, String password, String tipo) {
+	public Usuario autorizar(String email, String password) {
 		EntityManager em = JPAUtil.getEntityManager();
-		String sentenciaJPQL = "SELECT u FROM Usuario u WHERE u.email = :email AND u.password = :password AND u.tipo = :tipo";
+		String sentenciaJPQL = "SELECT u FROM Usuario u WHERE u.email = :email AND u.password = :password";
 		Query query = em.createQuery(sentenciaJPQL);
 		query.setParameter("email", email);
 		query.setParameter("password", password);
-		query.setParameter("tipo", tipo);
-		
+
 	    try {
 	        return (Usuario) query.getSingleResult();
 	    } catch (NoResultException e) {

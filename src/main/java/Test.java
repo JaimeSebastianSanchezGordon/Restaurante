@@ -9,7 +9,7 @@ public class Test {
 
 	public static void main(String[] args) {
 			EntityManager em = Persistence.createEntityManagerFactory("Restaurante").createEntityManager();
-			Usuario u = new Usuario("1", "1", "1");
+			Usuario u = new Usuario("1", "1");
 		
 		em.getTransaction().begin();
 		em.persist(u);

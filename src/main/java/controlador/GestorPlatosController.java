@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import modelo.JPA.JPAPlatoDAO;
 import modelo.entity.Plato;
+import modelo.entity.Usuario;
 import service.ImagenService;
 
 @WebServlet(name = "PlatoController", urlPatterns = {"/platos"})
@@ -46,21 +47,27 @@ public class GestorPlatosController extends HttpServlet {
 
     private void ruteador(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
-        String ruta = req.getParameter("ruta");
-        if (ruta == null) ruta = "listar";
+        HttpSession sesion = req.getSession();
+        Usuario usuario = (Usuario) sesion.getAttribute("usuarioAutorizado");
+       if (usuario != null){
+            String ruta = req.getParameter("ruta");
+            if (ruta == null) ruta = "listar";
 
-        switch (ruta) {
-            case "registrar" -> presentarFormularioRegistroPlato(req, resp);
-            case "editar" -> presentarFormularioEdicionPlato(req, resp);
-            case "listar" -> listarPlatos(req, resp);
-            case "guardar" -> guardarPlato(req, resp);
-            case "eliminar" -> eliminarPlato(req, resp);
-            case "modificar" -> modificarPlato(req, resp);
-            default -> {
-                LOGGER.warning("Ruta no reconocida: " + ruta);
-                listarPlatos(req, resp);
+            switch (ruta) {
+                case "registrar" -> presentarFormularioRegistroPlato(req, resp);
+                case "editar" -> presentarFormularioEdicionPlato(req, resp);
+                case "listar" -> listarPlatos(req, resp);
+                case "guardar" -> guardarPlato(req, resp);
+                case "eliminar" -> eliminarPlato(req, resp);
+                case "modificar" -> modificarPlato(req, resp);
+                default -> {
+                    LOGGER.warning("Ruta no reconocida: " + ruta);
+                    listarPlatos(req, resp);
+                }
             }
-        }
+       } else {
+           resp.sendRedirect("ingreso");
+       }
     }
 
     private void presentarFormularioRegistroPlato(HttpServletRequest req, HttpServletResponse resp)

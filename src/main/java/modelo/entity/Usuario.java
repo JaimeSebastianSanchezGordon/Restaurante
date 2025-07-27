@@ -10,14 +10,11 @@ public class Usuario {
 	private String email;
 	@Column
 	private String password;
-	@Column
-	private String tipo;
-	
-	public Usuario(String email, String password, String tipo) {
+
+	public Usuario(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
-		this.tipo = tipo;
 	}
 	
 	public Usuario() {
@@ -42,17 +39,10 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
 
 	@Override
 	public String toString() {
-		return "Usuario [email=" + email + ", password=" + password + ", tipo=" + tipo + "]";
+		return "Usuario [email=" + email + ", password=" + password + "]";
 	}
 	
 }

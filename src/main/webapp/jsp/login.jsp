@@ -21,28 +21,21 @@
             <h1>Welcome!</h1>
             <form action="<%= request.getContextPath() %>/ingreso" method="post">
                 <div class="input-group">
-                    <i class="fa-solid fa-user color_naranja"></i>
-                    <select name="usuario" required>
-                        <option value="" disabled selected>Seleccionar tipo de usuario</option>
-                        <option value="cliente">Cliente</option>
-                        <option value="empleado">Empleado</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
                     <i class="fa-solid fa-at color_naranja"></i>
-                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="email" name="email" placeholder="Email Address - Empleado" required>
                 </div>
                 
                 <div class="input-group">
                     <i class="fa-solid fa-lock color_naranja"></i>
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="Password - Empleado" required>
                 </div>
                 
-                <button type="submit" class="btnLogin">Ingreso</button>
+                <button type="submit" class="btnLogin">Ingreso - Empleado</button>
             </form>
+            <a href="registro.jsp" class="btnLogin registro-link">Crear cuenta de empleado</a>
             <hr>
-            <a href="registro.jsp" class="registro-link">Crear cuenta de cliente</a>
+            <a href="/ListarPlatos" class="btnLogin registro-link">Ingresar como cliente</a>
+
         </div>
     </section>
 </body>
