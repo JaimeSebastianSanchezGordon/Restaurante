@@ -1,25 +1,29 @@
+// ==================== PEDIDO.JAVA ====================
 package modelo.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pedido")
 public class Pedido implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idPedido;
+    private Long idPedido;
 
     @Column(name = "estado")
     private String estado;
@@ -39,9 +43,16 @@ public class Pedido implements Serializable {
     @Column(name = "invitados")
     private int invitados;
 
-    public Pedido(int idPedido, String estado, int numMesa, String formaPago, float cantidadPagar,
+    // Relación OneToMany con DetallePedido
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetallePedido> detalles = new ArrayList<>();
+
+    // Constructores
+    public Pedido() {
+    }
+
+    public Pedido(String estado, int numMesa, String formaPago, double cantidadPagar,
                   String nombreCliente, int invitados) {
-        this.idPedido = idPedido;
         this.estado = estado;
         this.numMesa = numMesa;
         this.formaPago = formaPago;
@@ -50,17 +61,12 @@ public class Pedido implements Serializable {
         this.invitados = invitados;
     }
 
-    public Pedido() {
-
-    }
-
-
     // Getters y Setters
-    public int getIdPedido() {
+    public Long getIdPedido() {
         return idPedido;
     }
 
-    public void setIdPedido(int idPedido) {
+    public void setIdPedido(Long idPedido) {
         this.idPedido = idPedido;
     }
 
@@ -92,8 +98,8 @@ public class Pedido implements Serializable {
         return cantidadPagar;
     }
 
-    public void setCantidadPagar(double total) {
-        this.cantidadPagar = total;
+    public void setCantidadPagar(double cantidadPagar) {
+        this.cantidadPagar = cantidadPagar;
     }
 
     public String getNombreCliente() {
@@ -112,10 +118,29 @@ public class Pedido implements Serializable {
         this.invitados = invitados;
     }
 
+    public List<DetallePedido> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
+    }
+
+    // Métodos de utilidad para manejar la relación bidireccional
+    public void addDetalle(DetallePedido detalle) {
+        detalles.add(detalle);
+        detalle.setPedido(this);
+    }
+
+    public void removeDetalle(DetallePedido detalle) {
+        detalles.remove(detalle);
+        detalle.setPedido(null);
+    }
+
     @Override
     public String toString() {
-        return "Pedido [idPedido=" + idPedido + ", estado=" + estado + ", numMesa=" + numMesa + ", formaPago="
-                + formaPago + ", cantidadPagar=" + cantidadPagar + ", nombreCliente=" + nombreCliente + ", invitados="
-                + invitados + "]";
+        return "Pedido [idPedido=" + idPedido + ", estado=" + estado + ", numMesa=" + numMesa + 
+               ", formaPago=" + formaPago + ", cantidadPagar=" + cantidadPagar + 
+               ", nombreCliente=" + nombreCliente + ", invitados=" + invitados + "]";
     }
 }
