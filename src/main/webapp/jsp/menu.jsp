@@ -51,7 +51,15 @@
 				</div>
 			</div>
 			<div class="menuContenido">
-				<h2 class="paraTi">Special Menu For You</h2>
+				<div class="inicio">
+					<h2 class="paraTi">Special Menu For You</h2>
+					<form id="formCrearPedido" class="botonCrearPedido">
+                		<input type="hidden" name="ruta" value="registrar" />
+                		<button class="botonRealizarPedido">
+                			Realizar pedido
+                		</button>
+                	</form>
+                </div>
 				<div class="platos">
 					<c:forEach var="plato" items="${platos}">
 						<div class="tarjeraPlato">
@@ -66,7 +74,7 @@
 								<p class="color_gris">${plato.descripcionPlato}</p>
 							</div>
 							<div class="notaBotton">
-								<button class="btnAgregar">+ Add Product</button>
+								<button onclick="agregarProducto(${plato.id})" class="btnAgregar">+ Add Product</button>
 							</div>
 						</div>
 					</c:forEach>

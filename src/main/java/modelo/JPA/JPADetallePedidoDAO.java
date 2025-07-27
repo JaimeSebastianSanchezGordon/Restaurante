@@ -21,6 +21,7 @@ public class JPADetallePedidoDAO implements DetallePedidoDAO {
             String jpql = "SELECT d FROM DetallePedido d WHERE d.pedido.idPedido = :idPedido";
             Query query = em.createQuery(jpql, DetallePedido.class);
             query.setParameter("idPedido", idPedido);
+            System.out.println("La lista tiene: " + query.getResultList().);
             return query.getResultList();
         } finally {
             em.close();
