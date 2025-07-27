@@ -209,51 +209,60 @@ public class JPADashboardDAO implements DashboardDAO {
             java.time.LocalDateTime inicioDateTime = fechaInicio.atStartOfDay();
             java.time.LocalDateTime finDateTime = fechaFin.atTime(23, 59, 59);
 
-            // Comida (platos > $20)
+            // Comida
             Query queryComida = em.createQuery(
-                "SELECT COALESCE(SUM(dp.precio), 0.0) " +
+                "SELECT COALESCE(SUM(dp.precio * dp.cantidad), 0.0) " +
                 "FROM DetallePedido dp " +
                 "JOIN dp.pedido p " +
                 "WHERE p.fechaCreacion BETWEEN :fechaInicio AND :fechaFin " +
                 "AND p.estado = 'Pagado' " +
-                "AND dp.plato.precio > 20"
+                "AND dp.plato.tipoPlato = 'Comida'"
             );
             queryComida.setParameter("fechaInicio", inicioDateTime);
             queryComida.setParameter("fechaFin", finDateTime);
             Object resultadoComida = queryComida.getSingleResult();
             Double totalComida = convertirADouble(resultadoComida);
 
-            // Bebida Fría (platos <= $20 y > $10)
+            // Bebida
             Query queryBebida = em.createQuery(
-                "SELECT COALESCE(SUM(dp.precio), 0.0) " +
+                "SELECT COALESCE(SUM(dp.precio * dp.cantidad), 0.0) " +
                 "FROM DetallePedido dp " +
                 "JOIN dp.pedido p " +
                 "WHERE p.fechaCreacion BETWEEN :fechaInicio AND :fechaFin " +
                 "AND p.estado = 'Pagado' " +
-                "AND dp.plato.precio <= 20 AND dp.plato.precio > 10"
+                "AND dp.plato.tipoPlato = 'Bebida'"
             );
             queryBebida.setParameter("fechaInicio", inicioDateTime);
             queryBebida.setParameter("fechaFin", finDateTime);
             Object resultadoBebida = queryBebida.getSingleResult();
             Double totalBebida = convertirADouble(resultadoBebida);
 
-            // Otros (platos <= $10)
+            // Otros
             Query queryOtros = em.createQuery(
-                "SELECT COALESCE(SUM(dp.precio), 0.0) " +
+                "SELECT COALESCE(SUM(dp.precio * dp.cantidad), 0.0) " +
                 "FROM DetallePedido dp " +
                 "JOIN dp.pedido p " +
                 "WHERE p.fechaCreacion BETWEEN :fechaInicio AND :fechaFin " +
                 "AND p.estado = 'Pagado' " +
-                "AND dp.plato.precio <= 10"
+                "AND dp.plato.tipoPlato = 'Otros'"
             );
             queryOtros.setParameter("fechaInicio", inicioDateTime);
             queryOtros.setParameter("fechaFin", finDateTime);
             Object resultadoOtros = queryOtros.getSingleResult();
             Double totalOtros = convertirADouble(resultadoOtros);
 
+            // Poner los valores en el mapa (manteniendo las claves como las espera el frontend)
             distribucion.put("Comida", totalComida);
-            distribucion.put("Bebida Fría", totalBebida);
+            distribucion.put("Bebida Fría", totalBebida);  // ← Nota: clave "Bebida Fría" para el frontend
             distribucion.put("Otros", totalOtros);
+
+            // Debug para verificar
+            System.out.println("=== DISTRIBUCIÓN POR TIPO PLATO ===");
+            System.out.println("Comida: $" + totalComida);
+            System.out.println("Bebida: $" + totalBebida);
+            System.out.println("Otros: $" + totalOtros);
+            System.out.println("Total: $" + (totalComida + totalBebida + totalOtros));
+            System.out.println("===================================");
 
             return distribucion;
 
@@ -261,6 +270,7 @@ public class JPADashboardDAO implements DashboardDAO {
             em.close();
         }
     }
+
     
     // Método helper para convertir Object a Double
     private Double convertirADouble(Object valor) {

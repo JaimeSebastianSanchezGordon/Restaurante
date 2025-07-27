@@ -88,9 +88,21 @@ public class RegistrarPedidoController extends HttpServlet{
 		System.out.println("Valores: " + idPedido + ", " + idPlato + ", " + cantidad);
 		
 		DetallePedido detallePedido = new DetallePedido();
+		// Parte de pedido
 		detallePedido.setIdPed(idPedido);
+		PedidoDAO pedido = new JPAPedidoDAO();
+		Pedido pedido1 = pedido.getPedidoById(Long.parseLong(req.getParameter("idPedido")));
+		detallePedido.setPedido(pedido1);
+		
+		// Parte de plato
 		detallePedido.setIdPla(idPlato);
+
+		PlatoDAO plato = new JPAPlatoDAO();
+		Plato plato1 = plato.obtenerPlato(Long.parseLong(req.getParameter("idPlato")));
+		detallePedido.setPlato(plato1);
 		detallePedido.setCantidad(cantidad);
+		
+		detallePedido.setPrecio(cantidad * plato1.getPrecio());
 		
 		detallePedidoDAO.agregarDetallePedido(detallePedido);
 		resp.setStatus(HttpServletResponse.SC_OK);
@@ -173,6 +185,13 @@ public class RegistrarPedidoController extends HttpServlet{
 		PrintWriter out = resp.getWriter();
 	    out.print("{\"success\": true, \"subtotal\": " + subtotal + ", \"impuesto\": " + impuesto + ", \"total\": " + total + "}");
 	    out.flush();
+	}
+
+	private void eliminar(HttpServletRequest req, HttpServletResponse resp) 
+			throws ServletException, IOException{
+		int idDetallePedido =  Integer.parseInt(req.getParameter("id"));
+		System.out.println("Eliminar pedido");
+		detallePedidoDAO.eliminarDetallePedido(Long.valueOf(idDetallePedido));
 	}
 	
 }

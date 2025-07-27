@@ -205,9 +205,8 @@ public class GestorPlatosController extends HttpServlet {
                 req.getParameter("nombrePlato"),
                 req.getParameter("codigoProducto"),
                 Double.parseDouble(req.getParameter("precio")),
-                Integer.parseInt(req.getParameter("cantidad")),
                 req.getParameter("descripcionPlato"),
-                req.getParameter("estado")
+                req.getParameter("tipoPlato") // Cambiado de "estado" a "tipoPlato"
         );
     }
 
@@ -245,9 +244,8 @@ public class GestorPlatosController extends HttpServlet {
         plato.setNombrePlato(datos.nombrePlato());
         plato.setCodigoProducto(datos.codigoProducto());
         plato.setPrecio(datos.precio());
-        plato.setCantidad(datos.cantidad());
         plato.setDescripcionPlato(datos.descripcionPlato());
-        plato.setEstado(datos.estado());
+        plato.setTipoPlato(datos.tipoPlato()); // Cambiado de setEstado a setTipoPlato
         plato.setImagenUrl(rutaImagen);
         return plato;
     }
@@ -302,13 +300,12 @@ public class GestorPlatosController extends HttpServlet {
         }
     }
 
-    // Record para encapsular datos del formulario
+    // Record actualizado para encapsular datos del formulario
     private record DatosPlato(
             String nombrePlato,
             String codigoProducto,
             double precio,
-            int cantidad,
             String descripcionPlato,
-            String estado
+            String tipoPlato // Cambiado de "estado" a "tipoPlato", removido "cantidad"
     ) {}
 }

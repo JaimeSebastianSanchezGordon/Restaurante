@@ -118,6 +118,7 @@ function actualizarListaPedido(){
 						<div class="btn-minus" style="cursor:pointer;"><i class="fa-solid fa-minus"></i></div>
 						<div class="aparte"><p class="cantidad">x${d.cantidad}</p></div>
 						<div class="btn-plus" style="cursor:pointer;"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></div>
+						<div class="btn-trash" style="cursor:pointer;"><i class="fas fa-trash style="color: #ffffff;""></i></div>
 					</div>
 				</div>
 			</div>
@@ -125,6 +126,7 @@ function actualizarListaPedido(){
 	 	const plusBtn = item.querySelector(".btn-plus");
 	 	const minusBtn = item.querySelector(".btn-minus");
 	 	const cantidadText = item.querySelector(".cantidad");
+		const trashBtn = item.querySelector(".btn-trash");
 
 	 	plusBtn.addEventListener("click", () => {
 	 		d.cantidad++;
@@ -178,8 +180,34 @@ function actualizarListaPedido(){
 	 		}
 	 	});
 		
-			lista.appendChild(item);
+		trashBtn.addEventListener("click", () =>{
+			if (confirm("¿Estás seguro de eliminar esta orden?")) {
+			const formData = new FormData();
+			formData.append("id", d.id);
+			
+			fetch(contextPath + "/registrarPedido?ruta=eliminar", {
+				method: "POST",
+				body: formData
+			})
+			.then(response => 	{
+				if (!response.ok) {
+					throw new Error("Error en la solicitud: " + response.status);
+				}
+					console.log("Detalle Pedido eliminado correctamente");
+					actualizarSumaTotal();
+					actualizarListaPedido();
+				})
+				.catch(error => {
+				console.error("Error al eliminar detalle pedido:", error);
+				alert("Error al eliminar detalle pedido");
+				});
+			}
 		});
+		
+			lista.appendChild(item);
+		
+		});
+		
 	})
 	.catch(err => console.error("Error al listar detalles:", err));
 }
