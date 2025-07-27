@@ -3,6 +3,8 @@ package controlador;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,45 +107,77 @@ public class DashboardController extends HttpServlet {
         getServletContext().getRequestDispatcher("/jsp/dashboard.jsp").forward(request, response);
     }
 
+ // En el método cargarDatosDashboard, agregar validaciones:
     private void cargarDatosDashboard(HttpServletRequest request, LocalDate fechaInicio, 
                                      LocalDate fechaFin, String periodo) {
         try {
-            // Obtener ingreso total
+            // Obtener datos con valores por defecto
             Double ingresoTotal = dashboardDAO.obtenerIngresoTotal(fechaInicio, fechaFin);
-            request.setAttribute("ingresoTotal", ingresoTotal);
-
-            // Obtener total de pedidos
+            ingresoTotal = (ingresoTotal != null) ? ingresoTotal : 0.0;
+            
             Integer totalPedidos = dashboardDAO.obtenerTotalPedidos(fechaInicio, fechaFin);
-            request.setAttribute("totalPedidos", totalPedidos);
-
+            totalPedidos = (totalPedidos != null) ? totalPedidos : 0;
+            
+            Double porcentajeCrecimiento = dashboardDAO.obtenerPorcentajeCrecimiento(fechaInicio, fechaFin);
+            porcentajeCrecimiento = (porcentajeCrecimiento != null) ? porcentajeCrecimiento : 0.0;
+            
             // Calcular promedio
             Double promedioVenta = totalPedidos > 0 ? ingresoTotal / totalPedidos : 0.0;
-            request.setAttribute("promedioVenta", promedioVenta);
-
-            // Obtener crecimiento
-            Double porcentajeCrecimiento = dashboardDAO.obtenerPorcentajeCrecimiento(fechaInicio, fechaFin);
-            request.setAttribute("porcentajeCrecimiento", porcentajeCrecimiento);
-
-            // Obtener ventas diarias para el gráfico
+            
+            // Obtener listas con verificación
             List<Object[]> ventasDiarias = dashboardDAO.obtenerVentasDiarias(fechaInicio, fechaFin);
-            request.setAttribute("ventasDiarias", ventasDiarias);
-
-            // Obtener platos más populares
+            if (ventasDiarias == null) ventasDiarias = new ArrayList<>();
+            
             List<Object[]> platosPopulares = dashboardDAO.obtenerPlatosPopulares(fechaInicio, fechaFin);
-            request.setAttribute("platosPopulares", platosPopulares);
-
-            // Obtener distribución por categorías para el gráfico de dona
+            if (platosPopulares == null) platosPopulares = new ArrayList<>();
+            
             Map<String, Double> distribucionCategorias = dashboardDAO.obtenerDistribucionCategorias(fechaInicio, fechaFin);
+            if (distribucionCategorias == null) {
+                distribucionCategorias = new HashMap<>();
+                distribucionCategorias.put("Comida", 0.0);
+                distribucionCategorias.put("Bebida Fría", 0.0);
+                distribucionCategorias.put("Otros", 0.0);
+            }
+            
+            // Setear atributos
+            request.setAttribute("ingresoTotal", ingresoTotal);
+            request.setAttribute("totalPedidos", totalPedidos);
+            request.setAttribute("promedioVenta", promedioVenta);
+            request.setAttribute("porcentajeCrecimiento", porcentajeCrecimiento);
+            request.setAttribute("ventasDiarias", ventasDiarias);
+            request.setAttribute("platosPopulares", platosPopulares);
             request.setAttribute("distribucionCategorias", distribucionCategorias);
-
-            // Información del período seleccionado
             request.setAttribute("periodoSeleccionado", periodo);
             request.setAttribute("fechaInicio", fechaInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             request.setAttribute("fechaFin", fechaFin.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-
+            
+            // Debug en consola
+            System.out.println("=== DEBUG DASHBOARD ===");
+            System.out.println("Período: " + periodo);
+            System.out.println("Ingreso Total: " + ingresoTotal);
+            System.out.println("Total Pedidos: " + totalPedidos);
+            System.out.println("Ventas Diarias count: " + ventasDiarias.size());
+            System.out.println("Platos Populares count: " + platosPopulares.size());
+            System.out.println("Distribución: " + distribucionCategorias);
+            System.out.println("=====================");
+            
         } catch (Exception e) {
             request.setAttribute("error", "Error al cargar los datos del dashboard: " + e.getMessage());
             e.printStackTrace();
+            
+            // Setear valores por defecto en caso de error
+            request.setAttribute("ingresoTotal", 0.0);
+            request.setAttribute("totalPedidos", 0);
+            request.setAttribute("promedioVenta", 0.0);
+            request.setAttribute("porcentajeCrecimiento", 0.0);
+            request.setAttribute("ventasDiarias", new ArrayList<>());
+            request.setAttribute("platosPopulares", new ArrayList<>());
+            
+            Map<String, Double> defaultDistribucion = new HashMap<>();
+            defaultDistribucion.put("Comida", 0.0);
+            defaultDistribucion.put("Bebida Fría", 0.0);
+            defaultDistribucion.put("Otros", 0.0);
+            request.setAttribute("distribucionCategorias", defaultDistribucion);
         }
     }
 

@@ -93,7 +93,7 @@
 							<c:forEach var="detalle" items="${detallesPedido}"
 								varStatus="status">
 								<div class="plato_card"
-									data-detalle-id="${detalle.idDetallePedido}">
+									data-detalle-id="${detalle.id}">
 									<div class="plato_imagen_container">
 										<img
 											src="${detalle.plato.imagenUrl != null ? detalle.plato.imagenUrl : '/images/default-food.png'}"
@@ -113,17 +113,17 @@
 											<label>Cantidad:</label>
 											<div class="cantidad_controls_avanzados">
 												<input type="number"
-													name="cantidades[${detalle.idDetallePedido}]"
-													id="cantidad_${detalle.idDetallePedido}"
+													name="cantidades[${detalle.id}]"
+													id="cantidad_${detalle.id}"
 													value="${detalle.cantidad}" min="1" max="20"
 													class="input_cantidad_avanzado"
-													onchange="actualizarSubtotal(${detalle.idDetallePedido}, ${detalle.plato.precio})">
+													onchange="actualizarSubtotal(${detalle.id}, ${detalle.plato.precio})">
 											</div>
 										</div>
 
 										<div class="subtotal_container">
 											<strong>Subtotal: $<span
-												id="subtotal_${detalle.idDetallePedido}"> <fmt:formatNumber
+												id="subtotal_${detalle.id}"> <fmt:formatNumber
 														value="${detalle.precio}" minFractionDigits="2"
 														maxFractionDigits="2" />
 											</span></strong>
@@ -131,7 +131,7 @@
 									</div>
 
 									<button type="button" class="btn_eliminar_plato_avanzado"
-										onclick="eliminarPlatoDirecto(${detalle.idDetallePedido}, ${pedido.idPedido})"
+										onclick="eliminarPlatoDirecto(${detalle.id}, ${pedido.idPedido})"
 										title="Eliminar plato del pedido">
 										<i class="fas fa-trash-alt"></i>
 									</button>
