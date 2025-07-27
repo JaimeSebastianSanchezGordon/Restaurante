@@ -20,9 +20,14 @@ public class loginController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 	}
 	
+	private void ruteador(HttpServletRequest request, HttpServletResponse response) {
+		
+		
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String email = request.getParameter("email");
@@ -42,19 +47,15 @@ public class loginController extends HttpServlet {
 			
 			if	(usuarioAutorizado.getTipo().equals("cliente")) {	
 				System.out.println("LISTADO DE LOS PLATOS");
-				JPAPlatoDAO platoDAO = new JPAPlatoDAO();
-				request.setAttribute("platos", platoDAO.obtenerTodosPlatos());
-				getServletContext().getRequestDispatcher("/jsp/menu.jsp").forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/ListarPlatos");
 			} else {
-				getServletContext().getRequestDispatcher("/jsp/gestionPedidos.jsp").forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/Dashboard");
 			}
 		} else {
 			System.out.println("USUARIO NO REGISTRADO");
-			response.sendRedirect("jsp/login.jsp");
+			response.sendRedirect(request.getContextPath() + "/ingreso");
 			
 		}
-		
-		
 		
 	}
 }

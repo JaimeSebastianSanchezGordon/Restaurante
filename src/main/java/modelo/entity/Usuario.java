@@ -20,8 +20,6 @@ public class Usuario {
 		this.tipo = tipo;
 	}
 	
-	
-
 	public Usuario() {
 		super();
 	}

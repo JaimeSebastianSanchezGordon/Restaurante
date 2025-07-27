@@ -22,7 +22,7 @@ public class ListarPlatosController extends HttpServlet{
 
 		request.setAttribute("platos", platoDAO.obtenerTodosPlatos());
 
-		getServletContext().getRequestDispatcher("/jsp/menu2.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/jsp/menu.jsp").forward(request, response);
 	}
 
 }

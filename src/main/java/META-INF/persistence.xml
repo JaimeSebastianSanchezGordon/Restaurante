@@ -11,6 +11,7 @@
         <class>modelo.entity.Pedido</class>
         <class>modelo.entity.DetallePedido</class>
         <class>modelo.entity.Usuario</class>
+        
 
         <properties>
             <!-- Configuración de conexión a la base de datos -->
@@ -27,11 +28,8 @@
                 - "create-or-extend-tables": Crea nuevas tablas o agrega columnas faltantes
                 - "none": No hace nada (configuración anterior)
             -->
-<<<<<<< HEAD
-            <property name="eclipselink.ddl-generation" value="create-tables"/>
-=======
+
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
->>>>>>> branch 'master' of https://github.com/JaimeSebastianSanchezGordon/Restaurante.git
             
             <!-- 📍 ALTERNATIVA SEGURA: Solo crear si no existen -->
             <!-- <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/> -->
