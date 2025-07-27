@@ -4,9 +4,9 @@ public class DetallePedidoDTO {
 	private String nombrePlato;
 	private double precioPlato;
 	private int cantidad;
-	private int id;
+	private Long id;
 	
-	public DetallePedidoDTO(String nombrePlato, double precioPlato, int cantidad, int id) {
+	public DetallePedidoDTO(String nombrePlato, double precioPlato, int cantidad, Long id) {
 		this.nombrePlato = nombrePlato;
 		this.precioPlato = precioPlato;
 		this.cantidad = cantidad;
@@ -37,11 +37,11 @@ public class DetallePedidoDTO {
 		this.cantidad = cantidad;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
