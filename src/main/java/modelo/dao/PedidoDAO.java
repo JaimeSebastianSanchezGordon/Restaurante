@@ -11,4 +11,5 @@ public interface PedidoDAO {
     void eliminarPedido(Long idPedido);
     void marcarPedidoComoPagado(Long idPedido);
     double calcularTotalPedido(Long idPedido);
+    Long registrarPedido(Pedido pedido);
 }

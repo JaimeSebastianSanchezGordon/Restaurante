@@ -1,14 +1,19 @@
 package modelo.JPA;
 
+import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import modelo.dao.DetallePedidoDAO;
 import modelo.entity.DetallePedido;
+import modelo.entity.Plato;
 import util.JPAUtil;
+import modelo.dao.PlatoDAO;
 
 public class JPADetallePedidoDAO implements DetallePedidoDAO {
 
+	private PlatoDAO platoDAO = new JPAPlatoDAO();
+	
     @Override
     public List<DetallePedido> obtenerDetallesPorPedido(Long idPedido) {
         EntityManager em = JPAUtil.getEntityManager();
@@ -113,4 +118,53 @@ public class JPADetallePedidoDAO implements DetallePedidoDAO {
             em.close();
         }
     }
+    
+    @Override
+	public List<String> adjuntarDetallePedido(DetallePedido detalle) {
+		EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(detalle);
+            em.getTransaction().commit();
+            List<String> datos = new ArrayList<>();
+            Plato plato = new Plato();
+            plato = platoDAO.obtenerPlato(Long.valueOf(detalle.getIdPlato()));
+            datos.add(plato.getNombrePlato());
+            datos.add(String.valueOf(plato.getPrecio()));
+            datos.add(String.valueOf(detalle.getCantidad()));
+            return datos;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error al agregar detalle pedido", e);
+        } finally {
+            em.close();
+        }
+	}
+
+	@Override
+	public DetallePedido obtenerDetallePedido(Long id) {
+		EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(DetallePedido.class, id);
+        } finally {
+            em.close();
+        }
+	}
+
+	@Override
+	public List<DetallePedido> obtenerDetallesPorPedidoPed(Long idPedido) {
+		EntityManager em = JPAUtil.getEntityManager();
+        try {
+            String jpql = "SELECT d FROM DetallePedido d WHERE d.idPed = :idPedido";
+            Query query = em.createQuery(jpql, DetallePedido.class);
+            query.setParameter("idPedido", idPedido);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+	}
+	
+	
 }

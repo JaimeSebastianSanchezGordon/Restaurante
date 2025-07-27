@@ -143,4 +143,27 @@ public class JPAPedidoDAO implements PedidoDAO {
             em.close();
         }
     }
+
+	@Override
+	public Long registrarPedido(Pedido pedido) {
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(pedido);
+			em.getTransaction().commit();
+			System.out.println("Guardado");
+			Long idGenerado = pedido.getIdPedido();
+			System.out.println("{ \"success\": true, \"idPedido\": " + idGenerado + " }");
+			return idGenerado;
+		} catch (Exception e) {
+			System.out.println("No guardado");
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			e.printStackTrace();
+			return (long) 0;
+		}finally {
+			em.close();
+		}
+	}
 }

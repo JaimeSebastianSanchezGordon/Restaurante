@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0"
+    xmlns="https://jakarta.ee/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+    <persistence-unit name="Restaurante">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+        <class>modelo.entity.Plato</class>
+        <class>modelo.entity.Pedido</class>
+        <class>modelo.entity.DetallePedido</class>
+        <class>modelo.entity.Usuario</class>
+        
+
+        <properties>
+            <!-- Configuración de conexión a la base de datos -->
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/restaurante"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+
+            <!-- 🔧 CAMBIO PRINCIPAL: Auto-generación de tablas -->
+            <!-- 
+                Opciones disponibles:
+                - "create-tables": Crea las tablas si no existen
+                - "drop-and-create-tables": Elimina y recrea las tablas (¡CUIDADO! Borra datos)
+                - "create-or-extend-tables": Crea nuevas tablas o agrega columnas faltantes
+                - "none": No hace nada (configuración anterior)
+            -->
+
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+            
+            <!-- 📍 ALTERNATIVA SEGURA: Solo crear si no existen -->
+            <!-- <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/> -->

@@ -23,6 +23,12 @@ public class DetallePedido implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "idPed")
+    private int idPed;
+
+    @Column(name = "idPla")
+    private int idPla;
+    
     @Column(name = "cantidad")
     private int cantidad;
 
@@ -98,7 +104,25 @@ public class DetallePedido implements Serializable {
         return plato != null ? plato.getId() : null;
     }
 
-    @Override
+    
+
+	public int getIdPed() {
+		return idPed;
+	}
+
+	public void setIdPed(int idPed) {
+		this.idPed = idPed;
+	}
+
+	public int getIdPla() {
+		return idPla;
+	}
+
+	public void setIdPla(int idPla) {
+		this.idPla = idPla;
+	}
+
+	@Override
     public String toString() {
         return "DetallePedido [id=" + id + ", cantidad=" + cantidad + ", precio=" + precio + 
                ", pedidoId=" + getIdPedido() + ", platoId=" + getIdPlato() + "]";

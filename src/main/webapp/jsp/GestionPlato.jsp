@@ -22,6 +22,9 @@
 				<i class="fas fa-utensils"></i>
 			</div>
 			<nav class="menu_navegacion">
+				<a href="${pageContext.request.contextPath}/ListarPlatos" class="elemento_navegacion">
+                	<i class="fas fa-home fa_navegacion_activo fa_tam"></i>
+            	</a>
 				<a href="${pageContext.request.contextPath}/Dashboard" class="elemento_navegacion">
                     <i class="fas fa-th-large"></i>
                 </a> <a href="${pageContext.request.contextPath}/GestionarPedido" class="elemento_navegacion"> <i
