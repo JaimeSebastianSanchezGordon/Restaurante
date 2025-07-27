@@ -133,6 +133,13 @@ public class Plato implements Serializable{
 			default: return estado;
 		}
 	}
+	public String getTipoPlato() {
+	    return tipoPlato;
+	}
+
+	public void setTipoPlato(String tipoPlato) {
+	    this.tipoPlato = tipoPlato;
+	}
 
 	@Override
 	public String toString() {
