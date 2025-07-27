@@ -31,9 +31,14 @@ public class JPAEstadoPedidoDAO implements EstadoPedidoDAO {
                     "FROM Pedido p WHERE p.idPedido = :id";
             TypedQuery<EstadoPedidoDTO> query = em.createQuery(jpql, EstadoPedidoDTO.class);
             query.setParameter("id", idPedido);
-            return query.getSingleResult();
+
+            // Usar getResultList() en lugar de getSingleResult() para mejor manejo
+            List<EstadoPedidoDTO> resultados = query.getResultList();
+            return resultados.isEmpty() ? null : resultados.get(0);
+
         } finally {
             em.close();
         }
+
     }
 }

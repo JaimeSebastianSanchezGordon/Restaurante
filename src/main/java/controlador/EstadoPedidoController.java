@@ -67,13 +67,23 @@ public class EstadoPedidoController extends HttpServlet{
         String idPedido = request.getParameter("idPedido");
         if (idPedido != null && !idPedido.isEmpty()) {
             try {
-
                 int idPedidoInt = Integer.parseInt(idPedido);
                 EstadoPedidoDTO estadoPedido = estadoPedidoDAO.obtenerPedidoPorId(idPedidoInt);
-                request.setAttribute("estadoPedido", estadoPedido);
+
+                if (estadoPedido == null) {
+                    request.setAttribute("error", "No se encontró ningún pedido: " + idPedido);
+                    // Opcional: puedes mantener el listado de pedidos aunque la búsqueda falle
+                    List<EstadoPedidoDTO> todosPedidos = estadoPedidoDAO.obtenerPedidos();
+                    request.setAttribute("estadoPedidos", todosPedidos);
+                } else {
+                    request.setAttribute("estadoPedido", estadoPedido);
+                }
+
             } catch (NumberFormatException e) {
-                request.setAttribute("error", "ID inválido.");
+                request.setAttribute("error", "ID inválido. Debe ser un número.");
             }
+        } else {
+            request.setAttribute("error", "Debe ingresar un ID de pedido.");
         }
 
         getServletContext().getRequestDispatcher("/jsp/estadoPedido.jsp").forward(request, response);

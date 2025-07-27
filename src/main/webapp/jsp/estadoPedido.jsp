@@ -22,15 +22,19 @@
         <div class="logo fa_borde_b">
             <i class="fa-brands fa-slack fa_navegacion_activo fa_tam_principal"></i>
         </div>
-        <a href="ListarPlatos" class="elemento_navegacion"> <i
-                class="fas fa-home fa_navegacion_inactivo fa_tam"></i>
-        </a> <a href="${pageContext.request.contextPath}/EstadoPedido" class="elemento_navegacion"> <i
-                class="fas fa-users fa_navegacion_activo fa_tam"></i>
-        </a> <a href="" class="elemento_navegacion"> <i
-                class="fas fa-file-alt fa_navegacion_inactivo fa_tam"></i>
-        </a> <a href="" class="elemento_navegacion"> <i
-                class="fas fa-hamburger fa_navegacion_inactivo fa_tam"></i>
-        </a> <a href="jsp/login.jsp" class="elemento_navegacion fa_navegacion_inactivo fa_tam">
+        <a href="ListarPlatos" class="elemento_navegacion">
+            <i class="fas fa-home fa_navegacion_inactivo fa_tam"></i>
+        </a>
+        <a href="${pageContext.request.contextPath}/EstadoPedido" class="elemento_navegacion">
+            <i class="fas fa-users fa_navegacion_activo fa_tam"></i>
+        </a>
+        <a href="" class="elemento_navegacion">
+            <i class="fas fa-file-alt fa_navegacion_inactivo fa_tam"></i>
+        </a>
+        <a href="" class="elemento_navegacion">
+            <i class="fas fa-hamburger fa_navegacion_inactivo fa_tam"></i>
+        </a>
+        <a href="jsp/login.jsp" class="elemento_navegacion fa_navegacion_inactivo fa_tam">
             <i class="fa-solid fa-person-walking-arrow-right"></i>
         </a>
     </aside>
@@ -50,55 +54,61 @@
                 </div>
             </section>
 
-            <c:if test="${not empty estadoPedido}">
-                <div class="encabezado_pedidos mb-4">
-                    <h2>Detalle del Pedido</h2>
-                    <span class="numero_pedido">Pedido #${estadoPedido.id}</span>
-                    <c:choose>
-                        <c:when test="${estadoPedido.estadoPreparacion == 'listo'}">
-                            <span class="pedido_estado estado_preparado">Pedido listo</span>
-                        </c:when>
-                        <c:when test="${estadoPedido.estadoPreparacion == 'en preparacion'}">
-                            <span class="pedido_estado estado_preparando">En preparación</span>
-                        </c:when>
-                    </c:choose>
-                </div>
-            </c:if>
-
+            <!-- Mensaje de error si existe -->
             <c:if test="${not empty error}">
                 <div class="alert alert-danger mb-4" role="alert">
                     <i class="fas fa-exclamation-circle me-2"></i>${error}
                 </div>
             </c:if>
 
-            <div class="lista_pedidos">
-                <div class="titulo_lista">Todos los Pedidos</div>
+            <!-- Vista cuando se busca un pedido específico -->
+            <c:if test="${not empty estadoPedido}">
+                <div class="pedido_item mb-4">
+                    <div class="pedido_header">
+                        <span class="pedido_id">Pedido #${estadoPedido.idPedido}</span>
+                        <c:choose>
+                            <c:when test="${estadoPedido.estadoPreparacion == 'listo'}">
+                                <span class="pedido_estado estado_preparado">Pedido listo</span>
+                            </c:when>
+                            <c:when test="${estadoPedido.estadoPreparacion == 'en preparacion'}">
+                                <span class="pedido_estado estado_preparando">En preparación</span>
+                            </c:when>
+                        </c:choose>
+                    </div>
+                </div>
+            </c:if>
 
-                <c:choose>
-                    <c:when test="${not empty estadoPedidos}">
-                        <c:forEach items="${estadoPedidos}" var="pedido">
-                            <div class="pedido_item mb-3">
-                                <div class="pedido_header">
-                                    <span class="pedido_id">Pedido #${pedido.id}</span>
-                                    <c:choose>
-                                        <c:when test="${pedido.estadoPreparacion == 'listo'}">
-                                            <span class="pedido_estado estado_preparado">Pedido listo</span>
-                                        </c:when>
-                                        <c:when test="${pedido.estadoPreparacion == 'en preparacion'}">
-                                            <span class="pedido_estado estado_preparando">En preparación</span>
-                                        </c:when>
-                                    </c:choose>
+            <!-- Vista del listado general (solo cuando no hay búsqueda específica) -->
+            <c:if test="${empty estadoPedido}">
+                <div class="lista_pedidos">
+                    <div class="titulo_lista">Todos los Pedidos</div>
+
+                    <c:choose>
+                        <c:when test="${not empty estadoPedidos}">
+                            <c:forEach items="${estadoPedidos}" var="pedido">
+                                <div class="pedido_item mb-3">
+                                    <div class="pedido_header">
+                                        <span class="pedido_id">Pedido #${pedido.idPedido}</span>
+                                        <c:choose>
+                                            <c:when test="${pedido.estadoPreparacion == 'listo'}">
+                                                <span class="pedido_estado estado_preparado">Pedido listo</span>
+                                            </c:when>
+                                            <c:when test="${pedido.estadoPreparacion == 'en preparacion'}">
+                                                <span class="pedido_estado estado_preparando">En preparación</span>
+                                            </c:when>
+                                        </c:choose>
+                                    </div>
                                 </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="alert alert-info">
+                                No hay pedidos registrados actualmente.
                             </div>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="alert alert-info">
-                            No hay pedidos registrados actualmente.
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </c:if>
         </div>
     </main>
 </div>
