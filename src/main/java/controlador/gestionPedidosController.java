@@ -46,7 +46,7 @@ public class gestionPedidosController extends HttpServlet{
         HttpSession sesion = request.getSession();
         Usuario usuario = (Usuario) sesion.getAttribute("usuarioAutorizado");
 
-        if (usuario == null) {
+        if (usuario != null) {
         String ruta = (request.getParameter("ruta") == null) ? "listar" : request.getParameter("ruta");
 
             switch (ruta) {

@@ -42,29 +42,31 @@
 				<h1>
 					Point<span class="resaltado">sell</span>
 				</h1>
-				<div class="campoBusqueda color_gris">
-					<i class="fas fa-search"></i> <input class="busqueda" type="text"
-						placeholder="Search Anything Here">
-				</div>
+<%--				<div class="campoBusqueda color_gris">--%>
+<%--					<i class="fas fa-search"></i>--%>
+<%--					<input class="busqueda" type="text" placeholder="Search Anything Here">--%>
+<%--				</div>--%>
 				<div class="notificacion">
 					<i class="fa-solid fa-bell color_blanco"></i>
 				</div>
 			</div>
+
 			<div class="menuContenido">
 				<div class="inicio">
 					<h2 class="paraTi">Special Menu For You</h2>
 					<form id="formCrearPedido" class="botonCrearPedido">
-                		<input type="hidden" name="ruta" value="registrar" />
-                		<button class="botonRealizarPedido">
-                			Realizar pedido
-                		</button>
-                	</form>
-                </div>
+						<input type="hidden" name="ruta" value="registrar" />
+						<button class="botonRealizarPedido">
+							Realizar pedido
+						</button>
+					</form>
+				</div>
+
 				<div class="platos">
 					<c:forEach var="plato" items="${platos}">
 						<div class="tarjeraPlato">
 							<div class="imagenPlato">
-								<img src="${plato.imagenUrl != null ? plato.imagenUrl : '/images/default-food.png'}" alt="">
+								<img src="${plato.imagenUrl != null ? plato.imagenUrl : '/images/default-food.png'}" alt="${plato.nombrePlato}">
 							</div>
 							<div class="nombrePrecio">
 								<h3>${plato.nombrePlato}</h3>
@@ -78,7 +80,38 @@
 							</div>
 						</div>
 					</c:forEach>
+					<div class="tarjeraPlato">
+						<div class="imagenPlato">
+							<img src="123" alt="123">
+						</div>
+						<div class="nombrePrecio">
+							<h3>123</h3>
+							<h3 class="color_naranja">123</h3>
+						</div>
+						<div class="contenidoPlato">
+							<p class="color_gris">123</p>
+						</div>
+						<div class="notaBotton">
+							<button class="btnAgregar">+ Add Product</button>
+						</div>
+					</div>
+					<div class="tarjeraPlato">
+						<div class="imagenPlato">
+							<img src="123" alt="123">
+						</div>
+						<div class="nombrePrecio">
+							<h3>123</h3>
+							<h3 class="color_naranja">123</h3>
+						</div>
+						<div class="contenidoPlato">
+							<p class="color_gris">123</p>
+						</div>
+						<div class="notaBotton">
+							<button class="btnAgregar">+ Add Product</button>
+						</div>
+					</div>
 				</div>
+			</div>
 		</section>
 
 		<section class="registroPedido">
