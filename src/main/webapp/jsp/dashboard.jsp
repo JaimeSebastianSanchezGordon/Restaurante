@@ -17,25 +17,31 @@
 
 <body>
     <div class="contenedor_panel">
+        <!-- SIDEBAR MODERNA CON TOOLTIPS Y BOTÓN SALIR -->
         <aside class="barra_lateral">
             <div class="logo">
                 <i class="fas fa-utensils"></i>
             </div>
 
-            <nav class="menu_navegacion">
-            	<a href="${pageContext.request.contextPath}/ListarPlatos" class="elemento_navegacion">
-                	<i class="fas fa-home fa_navegacion_activo fa_tam"></i>
-            	</a>
-                <a href="${pageContext.request.contextPath}/Dashboard" class="elemento_navegacion activo">
+            <nav class="navegacion">
+                <a href="${pageContext.request.contextPath}/Dashboard" class="elemento_navegacion active">
                     <i class="fas fa-th-large"></i>
+                    <span class="tooltip">Dashboard</span>
                 </a>
                 <a href="${pageContext.request.contextPath}/GestionarPedido" class="elemento_navegacion">
                     <i class="fas fa-file-alt"></i>
+                    <span class="tooltip">Gestionar</span>
                 </a>
                 <a href="${pageContext.request.contextPath}/platos" class="elemento_navegacion">
                     <i class="fas fa-hamburger"></i>
+                    <span class="tooltip">Platos</span>
                 </a>
             </nav>
+            
+            <a href="jsp/login.jsp" class="elemento_navegacion logout">
+    <i class="fas fa-sign-out-alt"></i>
+    <span class="tooltip">Salir</span>
+</a>
         </aside>
 
         <main class="contenido_principal">

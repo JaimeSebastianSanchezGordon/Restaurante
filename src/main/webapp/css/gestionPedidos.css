@@ -1,90 +1,211 @@
 @charset "UTF-8";
+
+/* ===== RESET Y CONFIGURACIÓN BASE ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     font-family: 'Lexend', sans-serif;
     background-color: #f8f9fa;
     color: #333;
 }
+
+/* ===== VARIABLES CSS ===== */
+:root {
+    --color-primario: #F67F20;
+    --color-primario-hover: #e06d1a;
+    --color-gris: #6c757d;
+    --color-gris-claro: #e9ecef;
+    --color-blanco: #ffffff;
+    --color-texto: #333333;
+    --color-borde: #dee2e6;
+    --radio-borde: 12px;
+    --transicion: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== LAYOUT PRINCIPAL ===== */
 .contenedor_panel {
     display: flex;
     min-height: 100vh;
 }
+
+/* ===== BARRA LATERAL MODERNA ===== */
 .barra_lateral {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
     width: 80px;
-    background-color: #fff;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    background: var(--color-blanco);
+    border-right: 1px solid var(--color-borde);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20px;
+    padding: 20px 0;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
 }
+
+/* Logo */
 .logo {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-gris-claro);
+    width: 100%;
+    text-align: center;
+}
+
+.logo i {
+    font-size: 32px;
+    color: var(--color-primario);
+    transition: var(--transicion);
+}
+
+.logo:hover i {
+    transform: scale(1.1);
+}
+
+/* Navegación */
+.navegacion {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    padding: 0 15px;
+}
+
+.elemento_navegacion {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 50px;
     height: 50px;
-    background-color: #F67F20;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 40px;
+    border-radius: var(--radio-borde);
+    color: var(--color-gris);
+    text-decoration: none;
+    transition: var(--transicion);
+    margin: 0 auto;
+    font-size: 20px;
 }
-.logo i {
-    color: white;
-    font-size: 24px;
+
+.elemento_navegacion:hover,
+.elemento_navegacion.active {
+    color: var(--color-primario);
+    background-color: rgba(246, 127, 32, 0.1);
+    transform: translateY(-2px);
 }
+
+/* Tooltips */
+.tooltip {
+    position: absolute;
+    left: 70px;
+    background: var(--color-texto);
+    color: var(--color-blanco);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: var(--transicion);
+    z-index: 1001;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 4px solid transparent;
+    border-right-color: var(--color-texto);
+}
+
+.elemento_navegacion:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Botón logout */
+.logout {
+    margin-top: auto;
+    margin-bottom: 20px;
+    color: #dc3545;
+}
+
+.logout:hover {
+    color: #c82333;
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* ===== COMPATIBILIDAD CON EL SISTEMA ANTERIOR ===== */
 .menu_navegacion {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
+    width: 100%;
+    padding: 0 15px;
 }
-.elemento_navegacion {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.3s;
-    cursor: pointer;
+
+/* ===== ICONOS Y FONTAWESOME ===== */
+i[class*="fa-"], 
+i[class*="fas "], 
+i[class*="far "], 
+i[class*="fab "] {
+    display: inline-block !important;
+    font-style: normal !important;
+    font-variant: normal !important;
+    text-rendering: auto !important;
+    line-height: 1 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
-.elemento_navegacion:hover {
-    background-color: #f0f0f0;
-    color: #333;
+
+.elemento_navegacion i,
+.logo i {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+    font-weight: 900 !important;
 }
-.elemento_navegacion.activo {
-    background-color: #F67F20;
-    color: white;
-}
+
+/* ===== CONTENIDO PRINCIPAL ===== */
 .contenido_principal {
     flex: 1;
     padding: 30px;
     display: flex;
     gap: 100px;
+    margin-left: 80px; /* Espacio para sidebar fija */
 }
+
 .panel_pedidos {
     width: 40%;
     margin-left: 30px;
 }
+
 .encabezado_pedidos {
     display: flex;
     align-items: center;
     gap: 15px;
     margin-bottom: 30px;
 }
+
 .encabezado_pedidos h2 {
     font-size: 24px;
     font-weight: 600;
 }
+
 .numero_pedido {
     font-size: 18px;
     color: #666;
 }
+
 .estado_pago {
     background-color: #4CB255;
     color: white;
@@ -94,80 +215,97 @@ body {
     font-weight: 500;
     margin-left: auto;
 }
+
 .lista_pedidos {
     background-color: white;
     border-radius: 16px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     overflow: hidden;
 }
+
 .titulo_lista {
     padding: 20px 25px;
     font-size: 16px;
     font-weight: 600;
     border-bottom: 1px solid #f0f0f0;
 }
+
 .pedido_item {
     padding: 20px 25px;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
     transition: all 0.3s ease;
 }
+
 .pedido_item:hover {
     background-color: #f8f9fa;
     transform: translateX(5px);
 }
+
 .pedido_item.activo {
     background-color: #F67F20;
     color: white;
     border-left: 4px solid #e56a1a;
 }
+
 .pedido_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
 }
+
 .pedido_id {
     font-weight: 600;
     font-size: 15px;
 }
+
 .pedido_estado {
     padding: 4px 8px;
     border-radius: 8px;
     font-size: 11px;
     font-weight: 500;
 }
+
 .estado_pagado {
     background-color: #28a745;
     color: white;
 }
+
 .estado_no_pagado {
     background-color: #dc3545;
     color: white;
 }
+
 /* Estilos específicos para cuando el pedido está activo */
 .pedido_item.activo .pedido_estado.estado_pagado {
     background-color: rgba(40, 167, 69, 0.8);
 }
+
 .pedido_item.activo .pedido_estado.estado_no_pagado {
     background-color: rgba(220, 53, 69, 0.8);
 }
+
 .pedido_info {
     font-size: 13px;
     color: #666;
     display: flex;
     justify-content: space-between;
 }
+
 .pedido_item.activo .pedido_info {
     color: rgba(255,255,255,0.8);
 }
+
 .pedido_precio {
     font-weight: 600;
     color: #333;
 }
+
 .pedido_item.activo .pedido_precio {
     color: white;
 }
+
 .panel_detalles {
     width: 50%;
     background-color: white;
@@ -175,46 +313,56 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     padding: 50px;
 }
+
 .detalles_header {
     margin-bottom: 30px;
 }
+
 .detalles_header h3 {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 20px;
 }
+
 .info_mesa {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
     margin-bottom: 30px;
 }
+
 .info_item {
     text-align: center;
 }
+
 .info_label {
     font-size: 14px;
     color: #666;
     margin-bottom: 8px;
 }
+
 .info_value {
     font-size: 16px;
     font-weight: 600;
 }
+
 .ordenes_titulo {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 20px;
 }
+
 .orden_item {
     display: flex;
     align-items: center;
     padding: 15px 0;
     border-bottom: 1px solid #f0f0f0;
 }
+
 .orden_item:last-child {
     border-bottom: none;
 }
+
 .orden_imagen {
     width: 60px;
     height: 60px;
@@ -223,24 +371,27 @@ body {
     object-fit: cover;
     background-color: #f0f0f0;
 }
+
 .orden_info {
     flex: 1;
 }
+
 .orden_nombre {
     font-size: 15px;
     font-weight: 500;
     margin-bottom: 4px;
 }
+
 .orden_cantidad {
     font-size: 13px;
     color: #666;
 }
+
 .orden_precio {
     font-size: 16px;
     font-weight: 600;
     color: #F67F20;
 }
-
 
 /* Estilos para el total del pedido */
 .total_pedido {
@@ -309,6 +460,7 @@ body {
     opacity: 0.6;
     transform: none;
 }
+
 .boton_imprimir:disabled:hover {
     background-color: #ccc;
     transform: none;
@@ -318,9 +470,11 @@ body {
 .encabezado_pedidos .estado_pago {
     background-color: #4CB255;
 }
+
 .encabezado_pedidos .estado_no_pagado {
     background-color: #FFA500;
 }
+
 /* Estilos para edición y eliminación de platos */
 .btn-cancelar {
     padding: 10px 20px;
@@ -331,9 +485,11 @@ body {
     cursor: pointer;
     transition: all 0.3s;
 }
+
 .btn-cancelar:hover {
     background-color: #f5f5f5;
 }
+
 .btn-eliminar-confirm {
     padding: 10px 20px;
     border-radius: 8px;
@@ -343,17 +499,21 @@ body {
     cursor: pointer;
     transition: all 0.3s;
 }
+
 .btn-eliminar-confirm:hover {
     background-color: #c82333;
 }
+
 .modal-body {
     padding: 15px 0;
     color: #555;
 }
+
 /* Estilos adicionales para mejorar la experiencia */
 .pedido_item:last-child {
     border-bottom: none;
 }
+
 /* Animaciones suaves */
 @keyframes fadeIn {
     from {
@@ -365,10 +525,12 @@ body {
         transform: translateY(0);
     }
 }
+
 .panel_detalles {
     animation: fadeIn 0.3s ease-in-out;
 }
-/* Estilos responsivos */
+
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1200px) {
     .contenido_principal {
         gap: 50px;
@@ -381,26 +543,53 @@ body {
         padding: 30px;
     }
 }
+
 @media (max-width: 768px) {
+    .barra_lateral {
+        width: 60px;
+    }
+    
     .contenido_principal {
         flex-direction: column;
         gap: 30px;
+        margin-left: 60px;
+        padding: 20px 15px;
     }
+    
     .panel_pedidos,
     .panel_detalles {
         width: 100%;
         margin-left: 0;
     }
+    
     .info_mesa {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
+    
+    /* Ocultar tooltips en móvil */
+    .tooltip {
+        display: none;
+    }
 }
+
+@media (max-width: 480px) {
+    .barra_lateral {
+        width: 50px;
+    }
+    
+    .contenido_principal {
+        margin-left: 50px;
+        padding: 15px 10px;
+    }
+}
+
 /* Estado de carga */
 .loading {
     opacity: 0.6;
     pointer-events: none;
 }
+
 /* Mensaje cuando no hay pedidos */
 .no-pedidos {
     text-align: center;
@@ -408,6 +597,7 @@ body {
     color: #666;
     font-style: italic;
 }
+
 /* Estilos para mensajes de estado */
 .mensaje-exito {
     background-color: #d4edda;
@@ -417,6 +607,7 @@ body {
     border-radius: 8px;
     margin-bottom: 20px;
 }
+
 .mensaje-error {
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
