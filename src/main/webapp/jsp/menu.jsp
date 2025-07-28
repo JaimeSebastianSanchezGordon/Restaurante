@@ -1,123 +1,145 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel de Control</title>
-<script src="https://kit.fontawesome.com/80cfa4399f.js"
-	crossorigin="anonymous"></script>
-<link
-	href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/menu.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - PointSell</title>
+    <script src="https://kit.fontawesome.com/80cfa4399f.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/menu.css">
 </head>
 
 <body>
-	<div class="contenedor_panel">
-		<aside class="barra_lateral">
-			<div class="logo fa_borde_b">
-				<i class="fa-brands fa-slack fa_navegacion_activo fa_tam_principal"></i>
-			</div>
-			<a href="ListarPlatos" class="elemento_navegacion"> <i
-				class="fas fa-home fa_navegacion_activo fa_tam"></i>
-			</a> <a href="${pageContext.request.contextPath}/EstadoPedido" class="elemento_navegacion"> <i
-				class="fas fa-users fa_navegacion_inactivo fa_tam"></i>
-			</a> <a href="" class="elemento_navegacion"> <i
-				class="fas fa-file-alt fa_navegacion_inactivo fa_tam"></i>
-			</a> <a href="" class="elemento_navegacion"> <i
-				class="fas fa-hamburger fa_navegacion_inactivo fa_tam"></i>
-			</a> <a href="jsp/login.jsp" class="elemento_navegacion fa_navegacion_inactivo fa_tam">
-				<i class="fa-solid fa-person-walking-arrow-right"></i>
-			</a>
-		</aside>
-		<section class="menu">
-			<div class="barraBusqueda">
-				<h1>
-					Point<span class="resaltado">sell</span>
-				</h1>
-<%--				<div class="campoBusqueda color_gris">--%>
-<%--					<i class="fas fa-search"></i>--%>
-<%--					<input class="busqueda" type="text" placeholder="Search Anything Here">--%>
-<%--				</div>--%>
-				<div class="notificacion">
-					<i class="fa-solid fa-bell color_blanco"></i>
-				</div>
-			</div>
-
-			<div class="menuContenido">
-				<div class="inicio">
-					<h2 class="paraTi">Special Menu For You</h2>
-					<form id="formCrearPedido" class="botonCrearPedido">
-						<input type="hidden" name="ruta" value="registrar" />
-						<button class="botonRealizarPedido">
-							Realizar pedido
-						</button>
-					</form>
-				</div>
-
-				<div class="platos">
-					<c:forEach var="plato" items="${platos}">
-						<div class="tarjeraPlato">
-							<div class="imagenPlato">
-								<img src="${plato.imagenUrl != null ? plato.imagenUrl : '/images/default-food.png'}" alt="${plato.nombrePlato}">
-							</div>
-							<div class="nombrePrecio">
-								<h3>${plato.nombrePlato}</h3>
-								<h3 class="color_naranja">$ ${plato.precio}</h3>
-							</div>
-							<div class="contenidoPlato">
-								<p class="color_gris">${plato.descripcionPlato}</p>
-							</div>
-							<div class="notaBotton">
-								<button onclick="agregarProducto(${plato.id})" class="btnAgregar">+ Add Product</button>
-							</div>
-						</div>
-					</c:forEach>
-				</div>
-			</div>
-		</section>
-
-		<section class="registroPedido">
-            <!-- Número pedido -->
-            <div class="numeroPedido" id="pedidoActual">
-                <div>
-                    <i class="fa-solid fa-xmark"></i>
-                </div>
+    <div class="contenedor_panel">
+        <!-- Barra lateral -->
+        <aside class="barra_lateral">
+            <div class="logo">
+                <i class="fa-brands fa-slack"></i>
             </div>
-            <!-- Lista pedidos -->
-            <div class="Lista-pedidos">
-            	<div id="listaPedido">
-            
-            	</div>
-            </div>
-            <!-- Pago -->
-            <div class="pago">
-            	<div id="totalPago">
-            	
-            	</div>
+            <nav class="navegacion">
+                <a href="ListarPlatos" class="elemento_navegacion active"> 
+                    <i class="fas fa-home"></i>
+                    <span class="tooltip">Inicio</span>
+                </a> 
+                <a href="${pageContext.request.contextPath}/EstadoPedido" class="elemento_navegacion"> 
+                    <i class="fas fa-users"></i>
+                    <span class="tooltip">Pedidos</span>
+                </a> 
                 
-                <!-- Botón Ordenar -->
-                <a href="factura.html">
-                    <div class="ordenarBoton">
-                        <button class="btnOrdenar">Place Order</button>
+            </nav>
+            <a href="jsp/login.jsp" class="elemento_navegacion logout">
+                <i class="fa-solid fa-person-walking-arrow-right"></i>
+                <span class="tooltip">Salir</span>
+            </a>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="contenido_principal">
+            <!-- Sección menú -->
+            <section class="menu">
+                <header class="barra_superior">
+                    <div class="titulo_seccion">
+                        <h1>Point<span class="resaltado">sell</span></h1>
+                        <p class="subtitulo">Sistema de punto de venta</p>
                     </div>
-                </a>
-            </div>
-        </section>
+                    
+                </header>
 
-	</div>
-	<!-- Script -->
+                <div class="menu_contenido">
+                    <div class="encabezado_menu">
+                        <div class="info_menu">
+                            <h2 class="titulo_menu">Menú Especial</h2>
+                            <p class="descripcion_menu">Selecciona los productos para tu pedido</p>
+                        </div>
+                        <form id="formCrearPedido" class="boton_crear_pedido">
+                            <input type="hidden" name="ruta" value="registrar" />
+                            <button type="submit" class="btn_realizar_pedido">
+                                <i class="fas fa-plus"></i>
+                                Realizar Pedido
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="contenedor_platos">
+                        <c:forEach var="plato" items="${platos}">
+                            <article class="tarjeta_plato">
+                                <div class="imagen_contenedor">
+                                    <img src="${plato.imagenUrl != null ? plato.imagenUrl : '/images/default-food.png'}" 
+                                         alt="${plato.nombrePlato}" 
+                                         class="imagen_plato">
+                                    <div class="overlay_precio">
+                                        <span class="precio">$${plato.precio}</span>
+                                    </div>
+                                </div>
+                                <div class="contenido_tarjeta">
+                                    <div class="info_plato">
+                                        <h3 class="nombre_plato">${plato.nombrePlato}</h3>
+                                        <p class="descripcion_plato">${plato.descripcionPlato}</p>
+                                    </div>
+                                    <div class="accion_tarjeta">
+                                        <button onclick="agregarProducto(${plato.id})" class="btn_agregar">
+                                            <i class="fas fa-plus"></i>
+                                            Agregar
+                                        </button>
+                                    </div>
+                                </div>
+                            </article>
+                        </c:forEach>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección registro pedido -->
+            <section class="registro_pedido">
+                <header class="encabezado_pedido">
+                    <div class="info_pedido">
+                        <h3>Pedido Actual</h3>
+                        <span class="numero_pedido" id="pedidoActual">#001</span>
+                    </div>
+                    <button class="btn_limpiar" onclick="limpiarPedido()">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </header>
+
+                <div class="lista_productos" id="listaPedido">
+                    <!-- Los productos se agregarán dinámicamente aquí con la nueva estructura -->
+                </div>
+
+                <footer class="resumen_pedido">
+                    <div class="totales" id="totalPago">
+                        <div class="linea_total">
+                            <span>Subtotal</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="linea_total">
+                            <span>IVA (19%)</span>
+                            <span id="iva">$0.00</span>
+                        </div>
+                        <div class="linea_total total_final">
+                            <span>Total</span>
+                            <span id="total">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="enlace_ordenar">
+                        <button class="btn_ordenar" type="button">
+                            <i class="fas fa-shopping-cart"></i>
+                            Procesar Pedido
+                        </button>
+                    </a>
+                </footer>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
     <script>
-    	const contextPath = '${pageContext.request.contextPath}';
+        const contextPath = '${pageContext.request.contextPath}';
     </script>
-	<script src="${pageContext.request.contextPath}/js/registroPedido.js"></script>
+    <script src="${pageContext.request.contextPath}/js/registroPedido.js"></script>
 </body>
-
 </html>

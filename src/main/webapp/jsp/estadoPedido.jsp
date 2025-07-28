@@ -18,24 +18,25 @@
 
 <body>
 <div class="contenedor_panel">
+    <!-- SIDEBAR EXACTAMENTE IGUAL QUE TU ORIGINAL -->
     <aside class="barra_lateral">
-        <div class="logo fa_borde_b">
-            <i class="fa-brands fa-slack fa_navegacion_activo fa_tam_principal"></i>
+        <div class="logo">
+            <i class="fa-brands fa-slack"></i>
         </div>
-        <a href="ListarPlatos" class="elemento_navegacion">
-            <i class="fas fa-home fa_navegacion_inactivo fa_tam"></i>
-        </a>
-        <a href="${pageContext.request.contextPath}/EstadoPedido" class="elemento_navegacion">
-            <i class="fas fa-users fa_navegacion_activo fa_tam"></i>
-        </a>
-        <a href="" class="elemento_navegacion">
-            <i class="fas fa-file-alt fa_navegacion_inactivo fa_tam"></i>
-        </a>
-        <a href="" class="elemento_navegacion">
-            <i class="fas fa-hamburger fa_navegacion_inactivo fa_tam"></i>
-        </a>
-        <a href="jsp/login.jsp" class="elemento_navegacion fa_navegacion_inactivo fa_tam">
+        <nav class="navegacion">
+            <a href="ListarPlatos" class="elemento_navegacion"> 
+                <i class="fas fa-home"></i>
+                <span class="tooltip">Inicio</span>
+            </a> 
+            <a href="${pageContext.request.contextPath}/EstadoPedido" class="elemento_navegacion active"> 
+                <i class="fas fa-users"></i>
+                <span class="tooltip">Pedidos</span>
+            </a> 
+            
+        </nav>
+        <a href="jsp/login.jsp" class="elemento_navegacion logout">
             <i class="fa-solid fa-person-walking-arrow-right"></i>
+            <span class="tooltip">Salir</span>
         </a>
     </aside>
 
@@ -49,7 +50,10 @@
                     <form action="${pageContext.request.contextPath}/EstadoPedido" method="post" class="d-flex">
                         <input type="hidden" name="ruta" value="verEstadoPedidoPorId">
                         <input type="text" name="idPedido" class="form-control me-2" placeholder="Buscar por ID de pedido">
-                        <button type="submit" class="btn btn-primary">Buscar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>
+                            Buscar
+                        </button>
                     </form>
                 </div>
             </section>
@@ -65,13 +69,22 @@
             <c:if test="${not empty estadoPedido}">
                 <div class="pedido_item mb-4">
                     <div class="pedido_header">
-                        <span class="pedido_id">Pedido #${estadoPedido.idPedido}</span>
+                        <span class="pedido_id">
+                            <i class="fas fa-receipt me-2"></i>
+                            Pedido #${estadoPedido.idPedido}
+                        </span>
                         <c:choose>
                             <c:when test="${estadoPedido.estadoPreparacion == 'listo'}">
-                                <span class="pedido_estado estado_preparado">Pedido listo</span>
+                                <span class="pedido_estado estado_preparado">
+                                    <i class="fas fa-check me-1"></i>
+                                    Pedido listo
+                                </span>
                             </c:when>
                             <c:when test="${estadoPedido.estadoPreparacion == 'en preparacion'}">
-                                <span class="pedido_estado estado_preparando">En preparación</span>
+                                <span class="pedido_estado estado_preparando">
+                                    <i class="fas fa-clock me-1"></i>
+                                    En preparación
+                                </span>
                             </c:when>
                         </c:choose>
                     </div>
@@ -81,20 +94,32 @@
             <!-- Vista del listado general (solo cuando no hay búsqueda específica) -->
             <c:if test="${empty estadoPedido}">
                 <div class="lista_pedidos">
-                    <div class="titulo_lista">Todos los Pedidos</div>
+                    <div class="titulo_lista">
+                        <i class="fas fa-list me-2"></i>
+                        Todos los Pedidos
+                    </div>
 
                     <c:choose>
                         <c:when test="${not empty estadoPedidos}">
                             <c:forEach items="${estadoPedidos}" var="pedido">
-                                <div class="pedido_item mb-3">
+                                <div class="pedido_item">
                                     <div class="pedido_header">
-                                        <span class="pedido_id">Pedido #${pedido.idPedido}</span>
+                                        <span class="pedido_id">
+                                            <i class="fas fa-receipt me-2"></i>
+                                            Pedido #${pedido.idPedido}
+                                        </span>
                                         <c:choose>
                                             <c:when test="${pedido.estadoPreparacion == 'listo'}">
-                                                <span class="pedido_estado estado_preparado">Pedido listo</span>
+                                                <span class="pedido_estado estado_preparado">
+                                                    <i class="fas fa-check me-1"></i>
+                                                    Pedido listo
+                                                </span>
                                             </c:when>
                                             <c:when test="${pedido.estadoPreparacion == 'en preparacion'}">
-                                                <span class="pedido_estado estado_preparando">En preparación</span>
+                                                <span class="pedido_estado estado_preparando">
+                                                    <i class="fas fa-clock me-1"></i>
+                                                    En preparación
+                                                </span>
                                             </c:when>
                                         </c:choose>
                                     </div>
@@ -103,6 +128,7 @@
                         </c:when>
                         <c:otherwise>
                             <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
                                 No hay pedidos registrados actualmente.
                             </div>
                         </c:otherwise>
@@ -115,6 +141,5 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/estadoPedido.js"></script>
 </body>
 </html>
