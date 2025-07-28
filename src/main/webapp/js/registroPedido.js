@@ -1,15 +1,95 @@
+// Actualiza tu archivo registroPedido.js
+
 // Carrito local en memoria
 let carritoLocal = [];
 let numeroLibrePedido = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Generar número de pedido temporal
-    document.getElementById("pedidoActual").textContent = `#${String(numeroLibrePedido).padStart(3, '0')}`;
+    // Obtener el siguiente número de pedido desde la base de datos
+    obtenerSiguienteNumeroPedido()
+        .then(numero => {
+            numeroLibrePedido = numero;
+            document.getElementById("pedidoActual").textContent = `#${String(numeroLibrePedido).padStart(3, '0')}`;
+            console.log("Número de pedido inicializado:", numeroLibrePedido);
+        })
+        .catch(error => {
+            console.error("Error al obtener siguiente número de pedido:", error);
+            // Si falla, mantener el valor por defecto
+            document.getElementById("pedidoActual").textContent = `#${String(numeroLibrePedido).padStart(3, '0')}`;
+        });
     
     // Inicializar vista
     actualizarVistaCarrito();
     actualizarTotalesLocales();
 });
+
+// Nueva función para obtener el siguiente número de pedido
+function obtenerSiguienteNumeroPedido() {
+    return fetch(contextPath + "/registrarPedido?ruta=obtenerSiguienteNumero", {
+        method: "GET"
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error al obtener siguiente número: " + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            return data.siguienteNumero;
+        } else {
+            throw new Error("Error en la respuesta del servidor");
+        }
+    });
+}
+
+// Actualizar la función procesarPedido para incrementar correctamente el número
+function procesarPedido() {
+    if (carritoLocal.length === 0) {
+        alert("No hay productos en el carrito para procesar.");
+        return;
+    }
+    
+    if (!confirm("¿Confirmar el procesamiento del pedido? Una vez procesado no se puede modificar.")) {
+        return;
+    }
+    
+    console.log("Iniciando procesamiento del pedido...");
+    
+    // Paso 1: Crear pedido
+    crearPedidoEnBD()
+        .then(idPedido => {
+            console.log("Pedido creado con ID:", idPedido);
+            // Paso 2: Agregar todos los productos del carrito
+            return agregarProductosAlPedido(idPedido);
+        })
+        .then(idPedido => {
+            console.log("Todos los productos agregados correctamente");
+            // Paso 3: Calcular totales finales
+            return calcularTotalesFinales(idPedido);
+        })
+        .then(() => {
+            alert("¡Pedido procesado exitosamente!");
+            // Limpiar carrito local
+            carritoLocal = [];
+            
+            // Obtener el siguiente número de pedido desde la BD
+            return obtenerSiguienteNumeroPedido();
+        })
+        .then(nuevoNumero => {
+            numeroLibrePedido = nuevoNumero;
+            document.getElementById("pedidoActual").textContent = `#${String(numeroLibrePedido).padStart(3, '0')}`;
+            actualizarVistaCarrito();
+            actualizarTotalesLocales();
+        })
+        .catch(error => {
+            console.error("Error al procesar pedido:", error);
+            alert("Error al procesar el pedido. Inténtalo de nuevo.");
+        });
+}
+
+// El resto de las funciones permanecen igual...
+// (agregarProducto, actualizarVistaCarrito, aumentarCantidad, etc.)
 
 // Función para agregar producto al carrito local
 function agregarProducto(idPlato) {
@@ -149,46 +229,6 @@ function actualizarTotalesLocales() {
             <span>$${total.toFixed(2)}</span>
         </div>
     `;
-}
-
-// Función para procesar pedido (enviar todo a la base de datos)
-function procesarPedido() {
-    if (carritoLocal.length === 0) {
-        alert("No hay productos en el carrito para procesar.");
-        return;
-    }
-    
-    if (!confirm("¿Confirmar el procesamiento del pedido? Una vez procesado no se puede modificar.")) {
-        return;
-    }
-    
-    console.log("Iniciando procesamiento del pedido...");
-    
-    // Paso 1: Crear pedido
-    crearPedidoEnBD()
-        .then(idPedido => {
-            console.log("Pedido creado con ID:", idPedido);
-            // Paso 2: Agregar todos los productos del carrito
-            return agregarProductosAlPedido(idPedido);
-        })
-        .then(idPedido => {
-            console.log("Todos los productos agregados correctamente");
-            // Paso 3: Calcular totales finales
-            return calcularTotalesFinales(idPedido);
-        })
-        .then(() => {
-            alert("¡Pedido procesado exitosamente!");
-            // Limpiar carrito local
-            carritoLocal = [];
-            numeroLibrePedido++;
-            document.getElementById("pedidoActual").textContent = `#${String(numeroLibrePedido).padStart(3, '0')}`;
-            actualizarVistaCarrito();
-            actualizarTotalesLocales();
-        })
-        .catch(error => {
-            console.error("Error al procesar pedido:", error);
-            alert("Error al procesar el pedido. Inténtalo de nuevo.");
-        });
 }
 
 // Función auxiliar para crear pedido en BD

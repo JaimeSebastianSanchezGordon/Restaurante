@@ -12,4 +12,7 @@ public interface PedidoDAO {
     void marcarPedidoComoPagado(Long idPedido);
     double calcularTotalPedido(Long idPedido);
     Long registrarPedido(Pedido pedido);
+
+    Long obtenerUltimoIdPedido();
+    Long obtenerSiguienteNumeroPedido();
 }

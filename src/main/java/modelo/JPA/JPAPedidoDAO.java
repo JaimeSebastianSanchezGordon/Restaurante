@@ -166,4 +166,30 @@ public class JPAPedidoDAO implements PedidoDAO {
 			em.close();
 		}
 	}
+	@Override
+	public Long obtenerUltimoIdPedido() {
+	    EntityManager em = JPAUtil.getEntityManager();
+	    try {
+	        String jpql = "SELECT MAX(p.idPedido) FROM Pedido p";
+	        Query query = em.createQuery(jpql);
+	        Long ultimoId = (Long) query.getSingleResult();
+	        return ultimoId != null ? ultimoId : 0L;
+	    } finally {
+	        em.close();
+	    }
+	}
+
+	@Override
+	public Long obtenerSiguienteNumeroPedido() {
+	    EntityManager em = JPAUtil.getEntityManager();
+	    try {
+	        // Obtener el último número de pedido + 1
+	        String jpql = "SELECT COALESCE(MAX(p.idPedido), 0) + 1 FROM Pedido p";
+	        Query query = em.createQuery(jpql);
+	        Long siguienteNumero = (Long) query.getSingleResult();
+	        return siguienteNumero != null ? siguienteNumero : 1L;
+	    } finally {
+	        em.close();
+	    }
+	}
 }

@@ -46,22 +46,23 @@ public class RegistrarPedidoController extends HttpServlet{
 	}
 	
 	private void ruteador(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException, ServletException {
-		String ruta = req.getParameter("ruta");
-        if (ruta == null) ruta = "listarPedidos";
-		
-        switch (ruta) {
-        case "registrar" -> registrarPedido(req, resp);
-        case "ordenar" -> ordenar(req, resp);
-        case "listarPedidos" -> listarPedidos(req, resp);
-        case "modificarCantidad" -> modificarCantidad(req, resp);
-        case "sumaTotal" -> sumaTotal(req, resp);
-	case "eliminar" -> eliminar(req,resp);
-        default -> {
-            LOGGER.warning("Ruta no reconocida: " + ruta);
-            listarPedidos(req, resp);
-        }
-    }
+	        throws IOException, ServletException {
+	    String ruta = req.getParameter("ruta");
+	    if (ruta == null) ruta = "listarPedidos";
+	    
+	    switch (ruta) {
+	        case "registrar" -> registrarPedido(req, resp);
+	        case "ordenar" -> ordenar(req, resp);
+	        case "listarPedidos" -> listarPedidos(req, resp);
+	        case "modificarCantidad" -> modificarCantidad(req, resp);
+	        case "sumaTotal" -> sumaTotal(req, resp);
+	        case "eliminar" -> eliminar(req, resp);
+	        case "obtenerSiguienteNumero" -> obtenerSiguienteNumeroPedido(req, resp); // NUEVA RUTA
+	        default -> {
+	            LOGGER.warning("Ruta no reconocida: " + ruta);
+	            listarPedidos(req, resp);
+	        }
+	    }
 	}
 	
 	private void registrarPedido(HttpServletRequest req, HttpServletResponse resp) 
@@ -193,6 +194,29 @@ public class RegistrarPedidoController extends HttpServlet{
 		int idDetallePedido =  Integer.parseInt(req.getParameter("id"));
 		System.out.println("Eliminar pedido");
 		detallePedidoDAO.eliminarDetallePedido(Long.valueOf(idDetallePedido));
+	}
+	
+	private void obtenerSiguienteNumeroPedido(HttpServletRequest req, HttpServletResponse resp) 
+	        throws ServletException, IOException {
+	    try {
+	        Long siguienteNumero = pedidoDAO.obtenerSiguienteNumeroPedido();
+	        
+	        resp.setContentType("application/json");
+	        resp.setCharacterEncoding("UTF-8");
+	        PrintWriter out = resp.getWriter();
+	        out.print("{\"success\": true, \"siguienteNumero\": " + siguienteNumero + "}");
+	        out.flush();
+	        
+	        LOGGER.info("Siguiente número de pedido obtenido: " + siguienteNumero);
+	    } catch (Exception e) {
+	        LOGGER.severe("Error al obtener siguiente número de pedido: " + e.getMessage());
+	        resp.setContentType("application/json");
+	        resp.setCharacterEncoding("UTF-8");
+	        PrintWriter out = resp.getWriter();
+	        out.print("{\"success\": false, \"error\": \"Error al obtener siguiente número\"}");
+	        out.flush();
+	        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 }
