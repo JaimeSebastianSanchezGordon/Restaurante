@@ -56,6 +56,7 @@ public class RegistrarPedidoController extends HttpServlet{
         case "listarPedidos" -> listarPedidos(req, resp);
         case "modificarCantidad" -> modificarCantidad(req, resp);
         case "sumaTotal" -> sumaTotal(req, resp);
+	case "eliminar" -> eliminar(req,resp);
         default -> {
             LOGGER.warning("Ruta no reconocida: " + ruta);
             listarPedidos(req, resp);
