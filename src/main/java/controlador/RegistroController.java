@@ -32,7 +32,7 @@ public class RegistroController extends HttpServlet {
 		
 		usuarioDAO.crear(usuario);
 		
-		response.sendRedirect("/ingreso");
+		response.sendRedirect(request.getContextPath() + "/ingreso");
 		
 		
 	}

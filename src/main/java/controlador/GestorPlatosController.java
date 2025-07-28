@@ -66,7 +66,7 @@ public class GestorPlatosController extends HttpServlet {
                 }
             }
        } else {
-           resp.sendRedirect("ingreso");
+           resp.sendRedirect(req.getContextPath() + "/ingreso");
        }
     }
 

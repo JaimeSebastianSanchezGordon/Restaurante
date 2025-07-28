@@ -34,7 +34,7 @@
             </form>
             <a href="registro.jsp" class="btnLogin registro-link">Crear cuenta de empleado</a>
             <hr>
-            <a href="/ListarPlatos" class="btnLogin registro-link">Ingresar como cliente</a>
+            <a href="${pageContext.request.contextPath}/ListarPlatos" class="btnLogin registro-link">Ingresar como cliente</a>
 
         </div>
     </section>

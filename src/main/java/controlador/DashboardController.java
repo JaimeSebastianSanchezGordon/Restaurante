@@ -76,7 +76,7 @@ public class DashboardController extends HttpServlet {
                     break;
             }
         } else {
-            response.sendRedirect("ingreso");
+            response.sendRedirect(request.getContextPath() + "/ingreso");
         }
     }
 

@@ -80,36 +80,6 @@
 							</div>
 						</div>
 					</c:forEach>
-					<div class="tarjeraPlato">
-						<div class="imagenPlato">
-							<img src="123" alt="123">
-						</div>
-						<div class="nombrePrecio">
-							<h3>123</h3>
-							<h3 class="color_naranja">123</h3>
-						</div>
-						<div class="contenidoPlato">
-							<p class="color_gris">123</p>
-						</div>
-						<div class="notaBotton">
-							<button class="btnAgregar">+ Add Product</button>
-						</div>
-					</div>
-					<div class="tarjeraPlato">
-						<div class="imagenPlato">
-							<img src="123" alt="123">
-						</div>
-						<div class="nombrePrecio">
-							<h3>123</h3>
-							<h3 class="color_naranja">123</h3>
-						</div>
-						<div class="contenidoPlato">
-							<p class="color_gris">123</p>
-						</div>
-						<div class="notaBotton">
-							<button class="btnAgregar">+ Add Product</button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</section>
