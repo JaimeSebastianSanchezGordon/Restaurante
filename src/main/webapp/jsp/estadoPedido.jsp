@@ -65,76 +65,99 @@
                 </div>
             </c:if>
 
-            <!-- Vista cuando se busca un pedido específico -->
             <c:if test="${not empty estadoPedido}">
-                <div class="pedido_item mb-4">
-                    <div class="pedido_header">
-                        <span class="pedido_id">
-                            <i class="fas fa-receipt me-2"></i>
-                            Pedido #${estadoPedido.idPedido}
-                        </span>
-                        <c:choose>
-                            <c:when test="${estadoPedido.estadoPreparacion == 'listo'}">
-                                <span class="pedido_estado estado_preparado">
-                                    <i class="fas fa-check me-1"></i>
-                                    Pedido listo
-                                </span>
-                            </c:when>
-                            <c:when test="${estadoPedido.estadoPreparacion == 'en preparacion'}">
-                                <span class="pedido_estado estado_preparando">
-                                    <i class="fas fa-clock me-1"></i>
-                                    En preparación
-                                </span>
-                            </c:when>
-                        </c:choose>
-                    </div>
-                </div>
-            </c:if>
+    <div class="pedido_item mb-4">
+        <div class="pedido_header">
+            <span class="pedido_id">
+                <i class="fas fa-receipt me-2"></i>
+                Pedido #${estadoPedido.idPedido}
+            </span>
+            <c:choose>
+                <c:when test="${estadoPedido.estadoPreparacion == 'listo'}">
+                    <span class="pedido_estado estado_preparado">
+                        <i class="fas fa-check me-1"></i>
+                        Pedido listo
+                    </span>
+                </c:when>
+                <c:when test="${estadoPedido.estadoPreparacion == 'en preparacion'}">
+                    <span class="pedido_estado estado_preparando">
+                        <i class="fas fa-clock me-1"></i>
+                        En preparación
+                    </span>
+                </c:when>
+                <c:when test="${estadoPedido.estadoPreparacion == 'No iniciado'}">
+                    <span class="pedido_estado estado_no_iniciado">
+                        <i class="fas fa-pause me-1"></i>
+                        No iniciado
+                    </span>
+                </c:when>
+                <c:otherwise>
+                    <span class="pedido_estado estado_desconocido">
+                        <i class="fas fa-question me-1"></i>
+                        ${estadoPedido.estadoPreparacion}
+                    </span>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+</c:if>
 
-            <!-- Vista del listado general (solo cuando no hay búsqueda específica) -->
-            <c:if test="${empty estadoPedido}">
-                <div class="lista_pedidos">
-                    <div class="titulo_lista">
-                        <i class="fas fa-list me-2"></i>
-                        Todos los Pedidos
-                    </div>
+<!-- Vista del listado general -->
+<c:if test="${empty estadoPedido}">
+    <div class="lista_pedidos">
+        <div class="titulo_lista">
+            <i class="fas fa-list me-2"></i>
+            Todos los Pedidos
+        </div>
 
-                    <c:choose>
-                        <c:when test="${not empty estadoPedidos}">
-                            <c:forEach items="${estadoPedidos}" var="pedido">
-                                <div class="pedido_item">
-                                    <div class="pedido_header">
-                                        <span class="pedido_id">
-                                            <i class="fas fa-receipt me-2"></i>
-                                            Pedido #${pedido.idPedido}
-                                        </span>
-                                        <c:choose>
-                                            <c:when test="${pedido.estadoPreparacion == 'listo'}">
-                                                <span class="pedido_estado estado_preparado">
-                                                    <i class="fas fa-check me-1"></i>
-                                                    Pedido listo
-                                                </span>
-                                            </c:when>
-                                            <c:when test="${pedido.estadoPreparacion == 'en preparacion'}">
-                                                <span class="pedido_estado estado_preparando">
-                                                    <i class="fas fa-clock me-1"></i>
-                                                    En preparación
-                                                </span>
-                                            </c:when>
-                                        </c:choose>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle me-2"></i>
-                                No hay pedidos registrados actualmente.
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
+        <c:choose>
+            <c:when test="${not empty estadoPedidos}">
+                <c:forEach items="${estadoPedidos}" var="pedido">
+                    <div class="pedido_item">
+                        <div class="pedido_header">
+                            <span class="pedido_id">
+                                <i class="fas fa-receipt me-2"></i>
+                                Pedido #${pedido.idPedido}
+                            </span>
+                            <c:choose>
+                                <c:when test="${pedido.estadoPreparacion == 'listo'}">
+                                    <span class="pedido_estado estado_preparado">
+                                        <i class="fas fa-check me-1"></i>
+                                        Pedido listo
+                                    </span>
+                                </c:when>
+                                <c:when test="${pedido.estadoPreparacion == 'en preparacion'}">
+                                    <span class="pedido_estado estado_preparando">
+                                        <i class="fas fa-clock me-1"></i>
+                                        En preparación
+                                    </span>
+                                </c:when>
+                                <c:when test="${pedido.estadoPreparacion == 'No iniciado'}">
+                                    <span class="pedido_estado estado_no_iniciado">
+                                        <i class="fas fa-pause me-1"></i>
+                                        No iniciado
+                                    </span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="pedido_estado estado_desconocido">
+                                        <i class="fas fa-question me-1"></i>
+                                        Estado: ${pedido.estadoPreparacion}
+                                    </span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No hay pedidos registrados actualmente.
                 </div>
-            </c:if>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</c:if>
         </div>
     </main>
 </div>

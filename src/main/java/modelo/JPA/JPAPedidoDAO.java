@@ -117,6 +117,7 @@ public class JPAPedidoDAO implements PedidoDAO {
             Pedido pedido = em.find(Pedido.class, idPedido);
             if (pedido != null) {
                 pedido.setEstado("Pagado");
+                pedido.setEstadoPreparacion("listo");
                 em.merge(pedido);
             }
             em.getTransaction().commit();

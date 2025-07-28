@@ -448,3 +448,36 @@ i[class*="fab "] {
     font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
     font-weight: 900 !important;
 }
+/* Agrega estos estilos a tu estadoPedido.css */
+
+/* Estados de pedidos */
+.estado_preparado {
+    background-color: #28a745;
+    color: white;
+}
+
+.estado_preparando {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.estado_no_iniciado {
+    background-color: #6c757d;
+    color: white;
+}
+
+.estado_desconocido {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Estilos base para todos los estados */
+.pedido_estado {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}

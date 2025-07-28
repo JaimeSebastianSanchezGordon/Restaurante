@@ -71,7 +71,7 @@ public class RegistrarPedidoController extends HttpServlet{
 		Pedido pedido = new Pedido();
 		pedido.setEstado("En proceso");
 		pedido.setFormaPago("Pendiente");
-		pedido.setEstadoPreparacion("No iniciado");
+		pedido.setEstadoPreparacion("en preparacion");
 		System.out.println("Paso por registrar pedido");
 		Long idPedido = pedidoDAO.registrarPedido(pedido);
 		resp.setContentType("application/json");
